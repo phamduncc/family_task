@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chính Sách Bảo Mật & Điều Khoản - Family Task</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .nav-tab:hover {
+            color: #FF6B6B;
+        }
+
+        .nav-tab.active {
+            color: #FF6B6B;
+            border-bottom-color: #FF6B6B;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #FF6B6B;
+            font-size: 1.8em;
+            margin: 30px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: #555;
+            font-size: 1.3em;
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+            text-align: justify;
+        }
+
+        ul {
+            margin: 15px 0 15px 25px;
+            color: #555;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 4px solid #FF6B6B;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box strong {
+            color: #FF6B6B;
+            font-size: 1.1em;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .emoji {
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+            .nav-tab {
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Family Task</h1>
+            <p>Nhắc Việc Gia Đình Thông Minh</p>
+        </div>
+
+        <div class="content">
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('privacy')">🔒 Chính Sách Bảo Mật</button>
+                <button class="nav-tab" onclick="showTab('terms')">📜 Điều Khoản Sử Dụng</button>
+                <button class="nav-tab" onclick="showTab('about')">ℹ️ Về Ứng Dụng</button>
+            </div>
+
+            <!-- Privacy Policy Tab -->
+            <div id="privacy" class="tab-content active">
+                <h2><span class="emoji">🔒</span> Chính Sách Bảo Mật</h2>
+                
+                <div class="highlight-box">
+                    <strong>Cam kết bảo mật:</strong> Family Task hoạt động 100% OFFLINE. Tất cả dữ liệu được lưu trữ cục bộ trên thiết bị của bạn và KHÔNG BAO GIỜ được gửi đến bất kỳ máy chủ nào.
+                </div>
+
+                <h3>1. Thu Thập Thông Tin</h3>
+                <p>Family Task <strong>KHÔNG thu thập</strong> bất kỳ thông tin cá nhân nào của người dùng. Ứng dụng hoạt động hoàn toàn offline và không kết nối với internet.</p>
+
+                <h3>2. Lưu Trữ Dữ Liệu</h3>
+                <p>Tất cả dữ liệu bạn tạo trong ứng dụng (công việc, thành viên, điểm số, huy hiệu, phần thưởng) được lưu trữ:</p>
+                <ul>
+                    <li><strong>Cục bộ trên thiết bị:</strong> Sử dụng SQLite database</li>
+                    <li><strong>Không đồng bộ đám mây:</strong> Dữ liệu chỉ tồn tại trên thiết bị của bạn</li>
+                    <li><strong>Không chia sẻ:</strong> Không có bất kỳ dữ liệu nào được gửi đi hoặc chia sẻ</li>
+                </ul>
+
+                <h3>3. Quyền Truy Cập</h3>
+                <p>Ứng dụng yêu cầu các quyền sau:</p>
+                <ul>
+                    <li><strong>Thông báo (Notifications):</strong> Để nhắc nhở bạn về công việc cần làm</li>
+                    <li><strong>Lưu trữ (Storage):</strong> Để lưu cơ sở dữ liệu SQLite và hình ảnh đính kèm</li>
+                    <li><strong>Camera/Thư viện ảnh:</strong> Để đính kèm hình ảnh vào công việc (tùy chọn)</li>
+                </ul>
+                <p>Tất cả các quyền này chỉ được sử dụng cho chức năng cốt lõi của ứng dụng và <strong>KHÔNG</strong> được dùng để thu thập dữ liệu.</p>
+
+                <h3>4. Bảo Mật Dữ Liệu</h3>
+                <ul>
+                    <li>Dữ liệu được lưu trữ trong bộ nhớ riêng của ứng dụng</li>
+                    <li>Các ứng dụng khác không thể truy cập dữ liệu của Family Task</li>
+                    <li>Khi gỡ cài đặt ứng dụng, tất cả dữ liệu sẽ bị xóa hoàn toàn</li>
+                </ul>
+
+                <h3>5. Dữ Liệu Của Trẻ Em</h3>
+                <p>Family Task được thiết kế cho toàn bộ gia đình, bao gồm trẻ em. Chúng tôi <strong>KHÔNG</strong> thu thập bất kỳ thông tin cá nhân nào từ trẻ em hoặc bất kỳ ai khác.</p>
+
+                <h3>6. Thay Đổi Chính Sách</h3>
+                <p>Nếu có bất kỳ thay đổi nào về chính sách bảo mật, chúng tôi sẽ cập nhật trang này và thông báo trong ứng dụng.</p>
+
+                <div class="contact-info">
+                    <p><strong>📧 Liên hệ về bảo mật:</strong></p>
+                    <p>Nếu bạn có bất kỳ câu hỏi nào về chính sách bảo mật, vui lòng liên hệ:</p>
+                    <p>Email: <a href="mailto:Michelledks8908@gmail.com">Michelledks8908@gmail.com</a></p>
+                </div>
+
+                <p style="margin-top: 20px; font-size: 0.9em; color: #888;">
+                    <em>Cập nhật lần cuối: 22 tháng 3, 2026</em>
+                </p>
+            </div>
+
+            <!-- Terms of Service Tab -->
+            <div id="terms" class="tab-content">
+                <h2><span class="emoji">📜</span> Điều Khoản Sử Dụng</h2>
+
+                <h3>1. Chấp Nhận Điều Khoản</h3>
+                <p>Bằng việc tải xuống, cài đặt và sử dụng ứng dụng Family Task, bạn đồng ý với các điều khoản sử dụng được nêu dưới đây.</p>
+
+                <h3>2. Mô Tả Dịch Vụ</h3>
+                <p>Family Task là ứng dụng quản lý công việc gia đình hoạt động hoàn toàn offline. Ứng dụng giúp:</p>
+                <ul>
+                    <li>Tạo và quản lý danh sách công việc nhà</li>
+                    <li>Phân công nhiệm vụ cho các thành viên trong gia đình</li>
+                    <li>Nhắc nhở tự động về công việc cần làm</li>
+                    <li>Theo dõi tiến độ và thống kê hiệu suất</li>
+                    <li>Tạo động lực thông qua hệ thống điểm, huy hiệu và phần thưởng</li>
+                </ul>
+
+                <h3>3. Trách Nhiệm Người Dùng</h3>
+                <p>Khi sử dụng Family Task, bạn đồng ý:</p>
+                <ul>
+                    <li>Sử dụng ứng dụng cho mục đích hợp pháp và phù hợp đạo đức</li>
+                    <li>Không sử dụng ứng dụng để quấy rối, lạm dụng hoặc gây hại cho người khác</li>
+                    <li>Tự chịu trách nhiệm về dữ liệu bạn tạo và lưu trữ trong ứng dụng</li>
+                    <li>Sao lưu dữ liệu quan trọng (ứng dụng không cung cấp tính năng sao lưu tự động)</li>
+                </ul>
+
+                <h3>4. Quyền Sở Hữu Trí Tuệ</h3>
+                <p>Family Task và tất cả nội dung, tính năng, giao diện thuộc quyền sở hữu của nhà phát triển. Bạn không được:</p>
+                <ul>
+                    <li>Sao chép, sửa đổi hoặc phân phối lại mã nguồn ứng dụng</li>
+                    <li>Dịch ngược (reverse engineer) ứng dụng</li>
+                    <li>Sử dụng thương hiệu, logo hoặc tên "Family Task" cho mục đích thương mại</li>
+                </ul>
+
+                <h3>5. Miễn Trừ Trách Nhiệm</h3>
+                <p>Family Task được cung cấp "NGUYÊN TRẠNG" (AS IS) mà không có bất kỳ bảo đảm nào. Chúng tôi không chịu trách nhiệm về:</p>
+                <ul>
+                    <li>Mất mát dữ liệu do lỗi thiết bị, gỡ cài đặt hoặc các nguyên nhân khác</li>
+                    <li>Xung đột hoặc tranh chấp phát sinh từ việc sử dụng ứng dụng trong gia đình</li>
+                    <li>Bất kỳ thiệt hại trực tiếp hoặc gián tiếp nào phát sinh từ việc sử dụng ứng dụng</li>
+                </ul>
+
+                <h3>6. Giới Hạn Trách Nhiệm</h3>
+                <p>Ứng dụng này là công cụ hỗ trợ quản lý công việc gia đình. Người dùng tự chịu trách nhiệm về cách sử dụng và các quyết định dựa trên dữ liệu trong ứng dụng.</p>
+
+                <h3>7. Chấm Dứt Sử Dụng</h3>
+                <p>Bạn có thể ngừng sử dụng ứng dụng bất cứ lúc nào bằng cách gỡ cài đặt. Khi gỡ cài đặt, tất cả dữ liệu sẽ bị xóa vĩnh viễn khỏi thiết bị.</p>
+
+                <h3>8. Thay Đổi Điều Khoản</h3>
+                <p>Chúng tôi có quyền cập nhật các điều khoản này. Phiên bản mới nhất sẽ luôn được công bố trên trang này và trong ứng dụng.</p>
+
+                <h3>9. Luật Áp Dụng</h3>
+                <p>Các điều khoản này tuân theo luật pháp Việt Nam. Mọi tranh chấp sẽ được giải quyết tại tòa án có thẩm quyền.</p>
+
+                <div class="contact-info">
+                    <p><strong>📧 Liên hệ hỗ trợ:</strong></p>
+                    <p>Email: <a href="mailto:Michelledks8908@gmail.com">Michelledks8908@gmail.com</a></p>
+                </div>
+
+                <p style="margin-top: 20px; font-size: 0.9em; color: #888;">
+                    <em>Cập nhật lần cuối: 22 tháng 3, 2026</em>
+                </p>
+            </div>
+
+            <!-- About Tab -->
+            <div id="about" class="tab-content">
+                <h2><span class="emoji">ℹ️</span> Về Family Task</h2>
+
+                <h3>🎯 Giới Thiệu</h3>
+                <p>Family Task là ứng dụng quản lý công việc gia đình được thiết kế để giúp các thành viên trong gia đình cùng nhau phân chia và hoàn thành công việc nhà một cách khoa học, công bằng và thú vị.</p>
+
+                <h3>✨ Tính Năng Chính</h3>
+                <ul>
+                    <li><strong>📋 Quản lý công việc:</strong> Tạo, chỉnh sửa, xóa công việc với mức độ ưu tiên</li>
+                    <li><strong>👨‍👩‍👧‍👦 Phân công thành viên:</strong> Giao việc cho từng người, theo dõi tiến độ</li>
+                    <li><strong>⏰ Nhắc nhở thông minh:</strong> Thông báo tự động theo giờ đã đặt</li>
+                    <li><strong>🔁 Lặp lại tự động:</strong> Công việc định kỳ (hàng ngày, tuần, tháng)</li>
+                    <li><strong>📅 Lịch tổng quan:</strong> Xem công việc theo ngày/tháng</li>
+                    <li><strong>📊 Thống kê:</strong> Báo cáo hiệu suất, tỷ lệ hoàn thành</li>
+                    <li><strong>🎮 Gamification:</strong> Điểm thưởng, huy hiệu, phần thưởng gia đình</li>
+                </ul>
+
+                <h3>🎨 Thiết Kế</h3>
+                <p>Giao diện thân thiện, dễ sử dụng cho mọi lứa tuổi với:</p>
+                <ul>
+                    <li>Màu sắc ấm áp, phù hợp với không khí gia đình</li>
+                    <li>Icon trực quan, dễ hiểu</li>
+                    <li>Hỗ trợ chế độ sáng/tối (Light/Dark Mode)</li>
+                    <li>Giao diện tiếng Việt hoàn chỉnh</li>
+                </ul>
+
+                <h3>⚙️ Công Nghệ</h3>
+                <ul>
+                    <li><strong>Flutter:</strong> Framework đa nền tảng (Android, iOS)</li>
+                    <li><strong>SQLite:</strong> Cơ sở dữ liệu cục bộ, hoạt động offline 100%</li>
+                    <li><strong>Local Notifications:</strong> Thông báo nhắc việc</li>
+                    <li><strong>Provider:</strong> Quản lý trạng thái ứng dụng</li>
+                </ul>
+
+                <h3>🎯 Mục Đích</h3>
+                <p>Family Task được tạo ra với mục đích:</p>
+                <ul>
+                    <li>Giúp gia đình tổ chức công việc nhà khoa học hơn</li>
+                    <li>Tăng tính trách nhiệm của mỗi thành viên</li>
+                    <li>Tạo động lực thông qua gamification (đặc biệt cho trẻ em)</li>
+                    <li>Biến việc nhà thành hoạt động vui vẻ, gắn kết gia đình</li>
+                    <li>Giảm xung đột về phân chia công việc</li>
+                </ul>
+
+                <h3>💡 Lợi Ích</h3>
+                <ul>
+                    <li><strong>Cho phụ huynh:</strong> Quản lý và phân công công việc dễ dàng, theo dõi tiến độ</li>
+                    <li><strong>Cho trẻ em:</strong> Học cách chịu trách nhiệm, nhận thưởng khi hoàn thành tốt</li>
+                    <li><strong>Cho cả gia đình:</strong> Minh bạch, công bằng, tăng sự gắn kết</li>
+                </ul>
+
+                <h3>🆓 Miễn Phí & Không Quảng Cáo</h3>
+                <p>Family Task hoàn toàn <strong>MIỄN PHÍ</strong> và <strong>KHÔNG CÓ QUẢNG CÁO</strong>. Chúng tôi tin rằng công cụ quản lý gia đình nên đơn giản và không bị làm phiền bởi quảng cáo.</p>
+
+                <div class="highlight-box">
+                    <strong>🌟 Phiên bản hiện tại:</strong> 1.0.0<br>
+                    <strong>📅 Ngày phát hành:</strong> Tháng 3, 2026<br>
+                    <strong>🏢 Nhà phát triển:</strong> Family Task Team
+                </div>
+
+                <h3>🔮 Tương Lai</h3>
+                <p>Chúng tôi đang lên kế hoạch phát triển các tính năng mới:</p>
+                <ul>
+                    <li>Sao lưu và khôi phục dữ liệu (tùy chọn)</li>
+                    <li>Thêm nhiều loại huy hiệu và phần thưởng</li>
+                    <li>Báo cáo thống kê chi tiết hơn</li>
+                    <li>Tùy chỉnh giao diện và màu sắc</li>
+                    <li>Hỗ trợ nhiều ngôn ngữ</li>
+                </ul>
+
+                <div class="contact-info">
+                    <p><strong>💬 Góp ý & Hỗ trợ:</strong></p>
+                    <p>Chúng tôi luôn lắng nghe ý kiến của bạn!</p>
+                    <p>Email: <a href="mailto:Michelledks8908@gmail.com">Michelledks8908@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Family Task - Nhắc Việc Gia Đình Thông Minh</strong></p>
+            <p>© 2026 Family Task Team. All rights reserved.</p>
+            <p style="margin-top: 10px;">
+                <a href="#privacy" onclick="showTab('privacy')" style="color: #667eea; text-decoration: none; margin: 0 10px;">Chính Sách Bảo Mật</a> |
+                <a href="#terms" onclick="showTab('terms')" style="color: #667eea; text-decoration: none; margin: 0 10px;">Điều Khoản</a> |
+                <a href="#about" onclick="showTab('about')" style="color: #667eea; text-decoration: none; margin: 0 10px;">Về Chúng Tôi</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.nav-tab');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

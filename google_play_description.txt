@@ -1,0 +1,219 @@
+═══════════════════════════════════════════════════════════════
+📱 FAMILY TASK - NHẮC VIỆC GIA ĐÌNH THÔNG MINH
+═══════════════════════════════════════════════════════════════
+
+[MÔ TẢ NGẮN - 80 ký tự]
+Quản lý công việc nhà thông minh - Gamification - 100% Offline
+
+═══════════════════════════════════════════════════════════════
+
+[MÔ TẢ ĐẦY ĐỦ - Tối đa 4000 ký tự]
+
+🏠 GIỚI THIỆU
+
+Family Task là ứng dụng quản lý công việc gia đình được thiết kế để giúp các thành viên trong gia đình cùng nhau phân chia và hoàn thành công việc nhà một cách khoa học, công bằng và thú vị!
+
+Với giao diện thân thiện, dễ sử dụng cho mọi lứa tuổi, Family Task biến việc nhà từ gánh nặng thành hoạt động vui vẻ, gắn kết gia đình thông qua hệ thống gamification độc đáo.
+
+✨ TÍNH NĂNG NỔI BẬT
+
+📋 QUẢN LÝ CÔNG VIỆC TOÀN DIỆN
+• Tạo danh sách công việc với tiêu đề, ghi chú chi tiết
+• Phân loại theo mức độ ưu tiên (Thấp/Trung bình/Cao)
+• Đính kèm hình ảnh minh họa
+• Đánh dấu hoàn thành nhanh chóng
+• Tìm kiếm và lọc công việc dễ dàng
+
+👨‍👩‍👧‍👦 PHÂN CÔNG THÀNH VIÊN
+• Tạo hồ sơ cho từng thành viên với avatar emoji dễ thương
+• Gán công việc cho một hoặc nhiều người
+• Theo dõi ai đã hoàn thành, ai chưa làm
+• Xem danh sách công việc theo từng thành viên
+• Tăng tính trách nhiệm, tránh "đùn đẩy" việc nhà
+
+⏰ NHẮC NHỞ THÔNG MINH
+• Đặt giờ nhắc nhở cho từng công việc
+• Thông báo tự động đúng giờ
+• Không bao giờ quên việc cần làm
+• Nhắc trước để chuẩn bị kịp thời
+
+🔁 LỊCH LẶP LẠI TỰ ĐỘNG
+• Công việc định kỳ: Hàng ngày, Hàng tuần, Hàng tháng
+• Tùy chỉnh ngày trong tuần (VD: Thứ 2, 4, 6)
+• Tự động tạo công việc mới sau khi hoàn thành
+• Tiết kiệm thời gian, không cần tạo lại
+
+📅 LỊCH TỔNG QUAN
+• Xem công việc theo dạng lịch (Calendar)
+• Highlight ngày có nhiều việc
+• Lọc theo thành viên hoặc trạng thái
+• Lập kế hoạch hiệu quả cho cả tuần/tháng
+
+📊 THỐNG KÊ & BÁO CÁO
+• Số việc đã hoàn thành của mỗi người
+• Tỷ lệ hoàn thành đúng hạn
+• Biểu đồ phân bố công việc (Pie Chart)
+• Bảng xếp hạng thành viên
+• So sánh hiệu suất giữa các thành viên
+
+🎮 GAMIFICATION - TẠO ĐỘNG LỰC
+
+🏆 HỆ THỐNG ĐIỂM THƯỞNG
+• Hoàn thành việc → Nhận điểm
+• Việc khó, ưu tiên cao → Điểm cao hơn
+• Bảng xếp hạng gia đình
+• Streak (chuỗi ngày liên tiếp hoàn thành việc)
+
+🏅 HUY HIỆU THÀNH TÍCH
+• "Chăm chỉ" - Hoàn thành 7 ngày liên tiếp
+• "Siêu nhân việc nhà" - Hoàn thành 50 công việc
+• "Người khởi đầu" - Hoàn thành công việc đầu tiên
+• "Chuyên gia" - Hoàn thành 100 công việc
+• Tự động trao huy hiệu khi đạt điều kiện
+
+🎁 CỬA HÀNG PHẦN THƯỞNG
+• Tạo phần thưởng gia đình (Xem phim, Đi chơi, Mua đồ...)
+• Đổi điểm lấy phần thưởng
+• Tạo động lực cho trẻ em
+• Biến việc nhà thành trò chơi thú vị
+
+🎨 THIẾT KẾ & TRẢI NGHIỆM
+
+✓ Giao diện thân thiện, màu sắc ấm áp phù hợp gia đình
+✓ Icon minh họa trực quan, dễ hiểu
+✓ Hỗ trợ chế độ Sáng/Tối (Light/Dark Mode)
+✓ Tiếng Việt hoàn chỉnh
+✓ Phù hợp cho mọi lứa tuổi từ trẻ em đến người lớn tuổi
+
+🔒 BẢO MẬT & RIÊNG TƯ
+
+✓ 100% OFFLINE - Không cần kết nối internet
+✓ KHÔNG thu thập dữ liệu cá nhân
+✓ KHÔNG quảng cáo
+✓ Dữ liệu lưu cục bộ trên thiết bị
+✓ An toàn tuyệt đối cho gia đình
+
+💡 LỢI ÍCH
+
+👨‍👩‍👧 CHO PHỤ HUYNH
+• Quản lý công việc nhà khoa học, có hệ thống
+• Phân công công bằng, minh bạch
+• Theo dõi tiến độ của từng thành viên
+• Giảm xung đột về việc nhà
+
+👧👦 CHO TRẺ EM
+• Học cách chịu trách nhiệm
+• Nhận thưởng khi hoàn thành tốt
+• Tạo thói quen tốt từ nhỏ
+• Vui vẻ khi làm việc nhà
+
+👨‍👩‍👧‍👦 CHO CẢ GIA ĐÌNH
+• Tăng sự gắn kết
+• Mọi người đều tham gia
+• Công bằng, không ai bị quá tải
+• Biến việc nhà thành hoạt động gia đình
+
+🎯 PHÙ HỢP VỚI
+
+• Gia đình có nhiều thành viên
+• Gia đình có trẻ em cần rèn luyện trách nhiệm
+• Người muốn quản lý công việc nhà khoa học
+• Ai muốn tạo động lực làm việc nhà cho con cái
+• Gia đình muốn phân chia công việc công bằng
+
+⚙️ CÔNG NGHỆ
+
+• Flutter - Đa nền tảng, hiệu năng cao
+• SQLite - Cơ sở dữ liệu offline
+• Local Notifications - Thông báo nhắc việc
+• Provider - Quản lý trạng thái mượt mà
+
+🆓 HOÀN TOÀN MIỄN PHÍ
+
+Family Task hoàn toàn MIỄN PHÍ, KHÔNG CÓ QUẢNG CÁO, KHÔNG CÓ MUA TRONG ỨNG DỤNG. Chúng tôi tin rằng công cụ quản lý gia đình nên đơn giản và không bị làm phiền.
+
+📧 HỖ TRỢ & LIÊN HỆ
+
+Nếu bạn có bất kỳ câu hỏi, góp ý hoặc cần hỗ trợ, vui lòng liên hệ:
+Email: Michelledks8908@gmail.com
+
+Chúng tôi luôn lắng nghe và cải thiện ứng dụng dựa trên phản hồi của bạn!
+
+🌟 TẢI NGAY FAMILY TASK
+
+Hãy bắt đầu hành trình quản lý công việc gia đình thông minh, khoa học và vui vẻ cùng Family Task ngay hôm nay!
+
+#QuảnLýGiaDình #ViệcNhà #Gamification #GiaĐìnhHạnhPhúc #TrẻEmChịuTráchNhiệm
+
+═══════════════════════════════════════════════════════════════
+
+[DANH SÁCH TỪ KHÓA - Tối đa 50 từ khóa]
+
+quản lý gia đình, việc nhà, công việc gia đình, phân công việc nhà, nhắc việc, to-do list, task manager, family organizer, chores, household tasks, gamification, điểm thưởng, huy hiệu, phần thưởng, trẻ em, phụ huynh, gia đình, lịch công việc, thống kê, offline, không quảng cáo, miễn phí, tiếng việt, việt nam, calendar, reminder, notification, productivity, organization, parenting, kids, children, responsibility, motivation, rewards, badges, points, streak, leaderboard, family bonding, household management, chore chart, task list, daily tasks, weekly tasks, recurring tasks, family app, home management
+
+═══════════════════════════════════════════════════════════════
+
+[THÔNG TIN BỔ SUNG CHO GOOGLE PLAY CONSOLE]
+
+Danh mục: Năng suất (Productivity) hoặc Gia đình (Family)
+Độ tuổi: Mọi lứa tuổi (Everyone)
+Giá: Miễn phí
+Mua trong ứng dụng: Không
+Quảng cáo: Không
+Quyền yêu cầu:
+  - Thông báo (Notifications)
+  - Lưu trữ (Storage)
+  - Camera/Thư viện ảnh (tùy chọn)
+
+Chính sách bảo mật: [Link đến privacy_policy.html]
+
+═══════════════════════════════════════════════════════════════
+
+[GỢI Ý SCREENSHOT DESCRIPTIONS]
+
+Screenshot 1 - Trang chủ:
+"📱 Trang chủ thân thiện - Xem nhanh công việc hôm nay và thống kê"
+
+Screenshot 2 - Danh sách công việc:
+"📋 Quản lý công việc dễ dàng với tìm kiếm và lọc thông minh"
+
+Screenshot 3 - Lịch:
+"📅 Lịch tổng quan - Lập kế hoạch cho cả tuần/tháng"
+
+Screenshot 4 - Thống kê:
+"📊 Thống kê chi tiết - Biểu đồ và bảng xếp hạng"
+
+Screenshot 5 - Gamification:
+"🎮 Điểm thưởng, huy hiệu và phần thưởng - Tạo động lực cho cả nhà"
+
+Screenshot 6 - Thành viên:
+"👨‍👩‍👧‍👦 Quản lý thành viên - Theo dõi hiệu suất từng người"
+
+Screenshot 7 - Tạo công việc:
+"✏️ Tạo công việc với nhiều tùy chọn - Lặp lại, nhắc nhở, điểm thưởng"
+
+Screenshot 8 - Dark Mode:
+"🌙 Hỗ trợ chế độ tối - Bảo vệ mắt, tiết kiệm pin"
+
+═══════════════════════════════════════════════════════════════
+
+[CHANGELOG MẪU CHO CẬP NHẬT ĐẦU TIÊN]
+
+Phiên bản 1.0.0 - Ra mắt chính thức
+🎉 Chào mừng đến với Family Task!
+
+✨ Tính năng chính:
+• Quản lý công việc gia đình toàn diện
+• Phân công thành viên thông minh
+• Nhắc nhở tự động
+• Lịch lặp lại (hàng ngày/tuần/tháng)
+• Lịch tổng quan trực quan
+• Thống kê và báo cáo chi tiết
+• Hệ thống gamification (điểm, huy hiệu, phần thưởng)
+• Hỗ trợ Dark Mode
+• 100% Offline, không quảng cáo
+
+Cảm ơn bạn đã sử dụng Family Task! 
+Hãy để lại đánh giá 5⭐ nếu bạn thích ứng dụng nhé!
+
+═══════════════════════════════════════════════════════════════
