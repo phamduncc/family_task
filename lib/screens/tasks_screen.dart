@@ -4,6 +4,7 @@ import '../providers/app_provider.dart';
 import '../models/task.dart';
 import '../theme/app_theme.dart';
 import '../widgets/task_card.dart';
+import '../widgets/app_icon.dart';
 import 'task_form_screen.dart';
 
 class TasksScreen extends StatefulWidget {
@@ -13,7 +14,8 @@ class TasksScreen extends StatefulWidget {
   State<TasksScreen> createState() => _TasksScreenState();
 }
 
-class _TasksScreenState extends State<TasksScreen> with SingleTickerProviderStateMixin {
+class _TasksScreenState extends State<TasksScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String _searchQuery = '';
 
@@ -34,38 +36,47 @@ class _TasksScreenState extends State<TasksScreen> with SingleTickerProviderStat
     return Consumer<AppProvider>(
       builder: (context, provider, _) {
         final all = provider.tasks;
-        final pending = all.where((t) => t.status == TaskStatus.pending || t.status == TaskStatus.inProgress).toList();
-        final completed = all.where((t) => t.status == TaskStatus.completed).toList();
+        final pending = all
+            .where((t) =>
+                t.status == TaskStatus.pending ||
+                t.status == TaskStatus.inProgress)
+            .toList();
+        final completed =
+            all.where((t) => t.status == TaskStatus.completed).toList();
         final overdue = all.where((t) => t.isOverdue).toList();
 
         List<Task> _filterSearch(List<Task> list) {
           if (_searchQuery.isEmpty) return list;
           return list
-              .where((t) => t.title.toLowerCase().contains(_searchQuery.toLowerCase()))
+              .where((t) =>
+                  t.title.toLowerCase().contains(_searchQuery.toLowerCase()))
               .toList();
         }
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('📋 Danh Sách Việc'),
+            title: const Text('Danh Sách Việc'),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(100),
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     child: TextField(
                       decoration: InputDecoration(
                         hintText: 'Tìm kiếm công việc...',
                         hintStyle: const TextStyle(color: Colors.white60),
-                        prefixIcon: const Icon(Icons.search, color: Colors.white70),
+                        prefixIcon:
+                            const Icon(Icons.search, color: Colors.white70),
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.2),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
                         ),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 10),
                       ),
                       style: const TextStyle(color: Colors.white),
                       onChanged: (v) => setState(() => _searchQuery = v),
@@ -93,9 +104,14 @@ class _TasksScreenState extends State<TasksScreen> with SingleTickerProviderStat
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    _TaskList(tasks: _filterSearch(pending), provider: provider),
-                    _TaskList(tasks: _filterSearch(completed), provider: provider),
-                    _TaskList(tasks: _filterSearch(overdue), provider: provider, emptyMessage: '🎉 Không có việc quá hạn!'),
+                    _TaskList(
+                        tasks: _filterSearch(pending), provider: provider),
+                    _TaskList(
+                        tasks: _filterSearch(completed), provider: provider),
+                    _TaskList(
+                        tasks: _filterSearch(overdue),
+                        provider: provider,
+                        emptyMessage: 'Không có việc quá hạn!'),
                   ],
                 ),
               ),
@@ -132,12 +148,13 @@ class _FilterBar extends StatelessWidget {
             onTap: () => provider.setMemberFilter(null),
           ),
           ...provider.members.map((m) => _FilterChip(
-            label: '${m.avatarEmoji} ${m.name}',
-            isSelected: provider.selectedMemberFilter == m.id,
-            onTap: () => provider.setMemberFilter(
-              provider.selectedMemberFilter == m.id ? null : m.id,
-            ),
-          )),
+                label: m.name,
+                leading: MemberAvatar(avatarKey: m.avatarEmoji, size: 20),
+                isSelected: provider.selectedMemberFilter == m.id,
+                onTap: () => provider.setMemberFilter(
+                  provider.selectedMemberFilter == m.id ? null : m.id,
+                ),
+              )),
         ],
       ),
     );
@@ -148,7 +165,12 @@ class _FilterChip extends StatelessWidget {
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
-  const _FilterChip({required this.label, required this.isSelected, required this.onTap});
+  final Widget? leading;
+  const _FilterChip(
+      {required this.label,
+      required this.isSelected,
+      required this.onTap,
+      this.leading});
 
   @override
   Widget build(BuildContext context) {
@@ -158,19 +180,28 @@ class _FilterChip extends StatelessWidget {
         margin: const EdgeInsets.only(right: 8),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryColor : Theme.of(context).cardColor,
+          color:
+              isSelected ? AppTheme.primaryColor : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? AppTheme.primaryColor : Colors.grey.withOpacity(0.3),
+            color: isSelected
+                ? AppTheme.primaryColor
+                : Colors.grey.withOpacity(0.3),
           ),
         ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: isSelected ? Colors.white : AppTheme.textSecondary,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (leading != null) ...[leading!, const SizedBox(width: 6)],
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                color: isSelected ? Colors.white : AppTheme.textSecondary,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -195,9 +226,11 @@ class _TaskList extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('📭', style: TextStyle(fontSize: 48)),
+            SvgIcon(AppIcons.task, size: 48),
             const SizedBox(height: 12),
-            Text(emptyMessage, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 15)),
+            Text(emptyMessage,
+                style: const TextStyle(
+                    color: AppTheme.textSecondary, fontSize: 15)),
           ],
         ),
       );

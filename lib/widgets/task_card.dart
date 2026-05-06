@@ -4,6 +4,7 @@ import '../models/task.dart';
 import '../models/member.dart';
 import '../providers/app_provider.dart';
 import '../theme/app_theme.dart';
+import 'app_icon.dart';
 import '../screens/task_form_screen.dart';
 
 class TaskCard extends StatelessWidget {
@@ -37,11 +38,11 @@ class TaskCard extends StatelessWidget {
   String get _repeatLabel {
     switch (task.repeatType) {
       case RepeatType.daily:
-        return '🔁 Hàng ngày';
+        return 'Hàng ngày';
       case RepeatType.weekly:
-        return '🔁 Hàng tuần';
+        return 'Hàng tuần';
       case RepeatType.monthly:
-        return '🔁 Hàng tháng';
+        return 'Hàng tháng';
       default:
         return '';
     }
@@ -72,10 +73,13 @@ class TaskCard extends StatelessWidget {
             title: const Text('Xóa công việc?'),
             content: Text('Bạn muốn xóa "${task.title}"?'),
             actions: [
-              TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Hủy')),
+              TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Hủy')),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text('Xóa', style: TextStyle(color: AppTheme.dangerColor)),
+                child: const Text('Xóa',
+                    style: TextStyle(color: AppTheme.dangerColor)),
               ),
             ],
           ),
@@ -86,9 +90,11 @@ class TaskCard extends StatelessWidget {
         onChanged?.call();
       },
       child: GestureDetector(
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => TaskFormScreen(task: task)),
-        ).then((_) => onChanged?.call()),
+        onTap: () => Navigator.of(context)
+            .push(
+              MaterialPageRoute(builder: (_) => TaskFormScreen(task: task)),
+            )
+            .then((_) => onChanged?.call()),
         child: Container(
           margin: const EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
@@ -103,7 +109,10 @@ class TaskCard extends StatelessWidget {
               width: 1.5,
             ),
             boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 6, offset: const Offset(0, 2)),
+              BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2)),
             ],
           ),
           child: Padding(
@@ -124,13 +133,15 @@ class TaskCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
-                                decoration: isDone ? TextDecoration.lineThrough : null,
+                                decoration:
+                                    isDone ? TextDecoration.lineThrough : null,
                                 color: isDone ? AppTheme.textSecondary : null,
                               ),
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
                               color: _priorityColor.withOpacity(0.15),
                               borderRadius: BorderRadius.circular(8),
@@ -150,7 +161,8 @@ class TaskCard extends StatelessWidget {
                         const SizedBox(height: 3),
                         Text(
                           task.note!,
-                          style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                          style: const TextStyle(
+                              fontSize: 12, color: AppTheme.textSecondary),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -164,17 +176,29 @@ class TaskCard extends StatelessWidget {
                             _InfoChip(
                               icon: Icons.access_time,
                               label: _formatDueDate(task.dueDate!),
-                              color: isOverdue && !isDone ? AppTheme.dangerColor : AppTheme.textSecondary,
+                              color: isOverdue && !isDone
+                                  ? AppTheme.dangerColor
+                                  : AppTheme.textSecondary,
                             ),
                           if (_repeatLabel.isNotEmpty)
-                            _InfoChip(label: _repeatLabel, color: AppTheme.accentColor),
+                            _InfoChip(
+                              label: _repeatLabel,
+                              color: AppTheme.accentColor,
+                              icon: Icons.repeat,
+                            ),
                           ..._buildAssigneeChips(context, provider),
                         ],
                       ),
                     ],
                   ),
                 ),
-                Text('⭐${task.points}', style: const TextStyle(fontSize: 12, color: AppTheme.warningColor)),
+                Row(mainAxisSize: MainAxisSize.min, children: [
+                  SvgIcon(AppIcons.star,
+                      size: 12, color: AppTheme.warningColor),
+                  Text('${task.points}',
+                      style: const TextStyle(
+                          fontSize: 12, color: AppTheme.warningColor)),
+                ]),
               ],
             ),
           ),
@@ -187,16 +211,15 @@ class TaskCard extends StatelessWidget {
     return task.assignedMemberIds.take(2).map((id) {
       final member = provider.getMemberById(id);
       if (member == null) return const SizedBox.shrink();
-      return _InfoChip(
-        label: '${member.avatarEmoji} ${member.name}',
-        color: AppTheme.accentColor,
-      );
+      return _MemberChip(member: member);
     }).toList();
   }
 
   String _formatDueDate(DateTime date) {
     final now = DateTime.now();
-    if (date.year == now.year && date.month == now.month && date.day == now.day) {
+    if (date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day) {
       return '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     }
     return '${date.day}/${date.month} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
@@ -237,11 +260,14 @@ class _CompleteButton extends StatelessWidget {
               title: const Text('Ai hoàn thành?'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: members.map((m) => ListTile(
-                  leading: Text(m.avatarEmoji, style: const TextStyle(fontSize: 24)),
-                  title: Text(m.name),
-                  onTap: () => Navigator.pop(context, m),
-                )).toList(),
+                children: members
+                    .map((m) => ListTile(
+                          leading:
+                              MemberAvatar(avatarKey: m.avatarEmoji, size: 32),
+                          title: Text(m.name),
+                          onTap: () => Navigator.pop(context, m),
+                        ))
+                    .toList(),
               ),
             ),
           );
@@ -253,7 +279,8 @@ class _CompleteButton extends StatelessWidget {
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('${selected.name} hoàn thành "${task.title}" +${task.points}⭐'),
+                content: Text(
+                    '${selected.name} hoàn thành "${task.title}" +${task.points} điểm'),
                 backgroundColor: AppTheme.successColor,
                 duration: const Duration(seconds: 2),
               ),
@@ -269,11 +296,46 @@ class _CompleteButton extends StatelessWidget {
           shape: BoxShape.circle,
           color: isDone ? AppTheme.successColor : Colors.transparent,
           border: Border.all(
-            color: isDone ? AppTheme.successColor : AppTheme.textSecondary.withOpacity(0.4),
+            color: isDone
+                ? AppTheme.successColor
+                : AppTheme.textSecondary.withOpacity(0.4),
             width: 2,
           ),
         ),
-        child: isDone ? const Icon(Icons.check, color: Colors.white, size: 18) : null,
+        child: isDone
+            ? const Icon(Icons.check, color: Colors.white, size: 18)
+            : null,
+      ),
+    );
+  }
+}
+
+class _MemberChip extends StatelessWidget {
+  final Member member;
+  const _MemberChip({required this.member});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+      decoration: BoxDecoration(
+        color: AppTheme.accentColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          MemberAvatar(
+              avatarKey: member.avatarEmoji,
+              size: 14,
+              backgroundColor: Colors.transparent),
+          const SizedBox(width: 3),
+          Text(member.name,
+              style: const TextStyle(
+                  fontSize: 11,
+                  color: AppTheme.accentColor,
+                  fontWeight: FontWeight.w500)),
+        ],
       ),
     );
   }
@@ -301,7 +363,9 @@ class _InfoChip extends StatelessWidget {
             Icon(icon, size: 11, color: color),
             const SizedBox(width: 3),
           ],
-          Text(label, style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.w500)),
+          Text(label,
+              style: TextStyle(
+                  fontSize: 11, color: color, fontWeight: FontWeight.w500)),
         ],
       ),
     );

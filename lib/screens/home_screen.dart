@@ -5,6 +5,7 @@ import '../providers/app_provider.dart';
 import '../models/task.dart';
 import '../theme/app_theme.dart';
 import '../widgets/task_card.dart';
+import '../widgets/app_icon.dart';
 import 'task_form_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -18,7 +19,8 @@ class HomeScreen extends StatelessWidget {
         final todayTasks = provider.todayTasks;
         final pendingCount = provider.pendingTasks.length;
         final overdueCount = provider.overdueTasks.length;
-        final completedToday = todayTasks.where((t) => t.status == TaskStatus.completed).length;
+        final completedToday =
+            todayTasks.where((t) => t.status == TaskStatus.completed).length;
 
         return Scaffold(
           body: CustomScrollView(
@@ -49,16 +51,24 @@ class HomeScreen extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      '🏠 Family Task',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    Row(
+                                      children: [
+                                        SvgIcon(AppIcons.home,
+                                            size: 22, color: Colors.white),
+                                        const SizedBox(width: 8),
+                                        const Text(
+                                          'Family Task',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Text(
-                                      DateFormat('EEEE, d MMMM yyyy', 'vi_VN').format(now),
+                                      DateFormat('EEEE, d MMMM yyyy', 'vi_VN')
+                                          .format(now),
                                       style: const TextStyle(
                                         color: Colors.white70,
                                         fontSize: 13,
@@ -69,7 +79,9 @@ class HomeScreen extends StatelessWidget {
                                 Consumer<AppProvider>(
                                   builder: (context, p, _) => IconButton(
                                     icon: Icon(
-                                      p.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                                      p.isDarkMode
+                                          ? Icons.light_mode
+                                          : Icons.dark_mode,
                                       color: Colors.white,
                                     ),
                                     onPressed: () => p.toggleDarkMode(),
@@ -79,8 +91,9 @@ class HomeScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Hôm nay: $completedToday/${todayTasks.length} việc hoàn thành',
-                              style: const TextStyle(color: Colors.white, fontSize: 13),
+                              'Hôm nay: $completedToday / ${todayTasks.length} việc hoàn thành',
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 13),
                             ),
                           ],
                         ),
@@ -104,36 +117,49 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       if (overdueCount > 0) ...[
                         _SectionHeader(
-                          title: '⚠️ Quá Hạn ($overdueCount)',
+                          title: 'Quá Hạn ($overdueCount)',
                           color: AppTheme.dangerColor,
+                          icon: const Icon(Icons.warning_amber_rounded,
+                              size: 18, color: AppTheme.dangerColor),
                         ),
                         const SizedBox(height: 8),
                         ...provider.overdueTasks.take(3).map(
-                          (task) => TaskCard(task: task, onChanged: () => provider.loadTasks()),
-                        ),
+                              (task) => TaskCard(
+                                  task: task,
+                                  onChanged: () => provider.loadTasks()),
+                            ),
                         const SizedBox(height: 16),
                       ],
                       _SectionHeader(
-                        title: '📅 Hôm Nay (${todayTasks.length})',
+                        title: 'Hôm Nay (${todayTasks.length})',
                         color: AppTheme.primaryColor,
+                        icon: SvgIcon(AppIcons.calendar,
+                            size: 18, color: AppTheme.primaryColor),
                         action: TextButton(
                           onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => const TaskFormScreen()),
+                            MaterialPageRoute(
+                                builder: (_) => const TaskFormScreen()),
                           ),
                           child: const Text('+ Thêm'),
                         ),
                       ),
                       const SizedBox(height: 8),
                       if (todayTasks.isEmpty)
-                        _EmptyState(message: 'Không có việc nào hôm nay 🎉\nThư giãn thôi!')
+                        _EmptyState(
+                            message:
+                                'Không có việc nào hôm nay!\nThư giãn thôi!')
                       else
                         ...todayTasks.map(
-                          (task) => TaskCard(task: task, onChanged: () => provider.loadTasks()),
+                          (task) => TaskCard(
+                              task: task,
+                              onChanged: () => provider.loadTasks()),
                         ),
                       const SizedBox(height: 16),
                       _SectionHeader(
-                        title: '👨‍👩‍👧‍👦 Thành Viên',
+                        title: 'Thành Viên',
                         color: AppTheme.accentColor,
+                        icon: SvgIcon(AppIcons.father,
+                            size: 18, color: AppTheme.accentColor),
                       ),
                       const SizedBox(height: 8),
                       _MemberQuickView(provider: provider),
@@ -176,7 +202,7 @@ class _StatCards extends StatelessWidget {
       children: [
         Expanded(
           child: _StatCard(
-            emoji: '📋',
+            icon: SvgIcon(AppIcons.task, size: 22, color: AppTheme.accentColor),
             label: 'Chờ làm',
             value: '$pendingCount',
             color: AppTheme.accentColor,
@@ -185,7 +211,8 @@ class _StatCards extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
           child: _StatCard(
-            emoji: '✅',
+            icon:
+                SvgIcon(AppIcons.check, size: 22, color: AppTheme.successColor),
             label: 'Hôm nay xong',
             value: '$completedToday/$totalToday',
             color: AppTheme.successColor,
@@ -194,10 +221,16 @@ class _StatCards extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
           child: _StatCard(
-            emoji: '🔴',
+            icon: Icon(Icons.running_with_errors_rounded,
+                size: 22,
+                color: overdueCount > 0
+                    ? AppTheme.dangerColor
+                    : AppTheme.textSecondary),
             label: 'Quá hạn',
             value: '$overdueCount',
-            color: overdueCount > 0 ? AppTheme.dangerColor : AppTheme.textSecondary,
+            color: overdueCount > 0
+                ? AppTheme.dangerColor
+                : AppTheme.textSecondary,
           ),
         ),
       ],
@@ -206,13 +239,13 @@ class _StatCards extends StatelessWidget {
 }
 
 class _StatCard extends StatelessWidget {
-  final String emoji;
+  final Widget icon;
   final String label;
   final String value;
   final Color color;
 
   const _StatCard({
-    required this.emoji,
+    required this.icon,
     required this.label,
     required this.value,
     required this.color,
@@ -227,16 +260,20 @@ class _StatCard extends StatelessWidget {
         color: isDark ? const Color(0xFF2D2D44) : Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: color.withOpacity(0.15), blurRadius: 8, offset: const Offset(0, 3)),
+          BoxShadow(
+              color: color.withOpacity(0.15),
+              blurRadius: 8,
+              offset: const Offset(0, 3)),
         ],
       ),
       child: Column(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 22)),
+          icon,
           const SizedBox(height: 4),
           Text(
             value,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: color),
+            style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: color),
           ),
           Text(
             label,
@@ -253,18 +290,23 @@ class _SectionHeader extends StatelessWidget {
   final String title;
   final Color color;
   final Widget? action;
+  final Widget? icon;
 
-  const _SectionHeader({required this.title, required this.color, this.action});
+  const _SectionHeader(
+      {required this.title, required this.color, this.action, this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        if (icon != null) ...[icon!, const SizedBox(width: 6)],
         Text(
           title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color),
+          style: TextStyle(
+              fontSize: 16, fontWeight: FontWeight.bold, color: color),
         ),
+        const Spacer(),
         if (action != null) action!,
       ],
     );
@@ -301,7 +343,8 @@ class _MemberQuickView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (provider.members.isEmpty) {
-      return const Text('Chưa có thành viên', style: TextStyle(color: AppTheme.textSecondary));
+      return const Text('Chưa có thành viên',
+          style: TextStyle(color: AppTheme.textSecondary));
     }
     return SizedBox(
       height: 90,
@@ -312,7 +355,9 @@ class _MemberQuickView extends StatelessWidget {
         itemBuilder: (context, index) {
           final member = provider.members[index];
           final taskCount = provider.tasks
-              .where((t) => t.assignedMemberIds.contains(member.id) && t.status != TaskStatus.completed)
+              .where((t) =>
+                  t.assignedMemberIds.contains(member.id) &&
+                  t.status != TaskStatus.completed)
               .length;
           return Container(
             width: 80,
@@ -321,22 +366,27 @@ class _MemberQuickView extends StatelessWidget {
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(14),
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 6, offset: const Offset(0, 2)),
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.06),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2)),
               ],
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(member.avatarEmoji, style: const TextStyle(fontSize: 26)),
+                MemberAvatar(avatarKey: member.avatarEmoji, size: 36),
                 const SizedBox(height: 2),
                 Text(
                   member.name,
-                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      fontSize: 11, fontWeight: FontWeight.w600),
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   '$taskCount việc',
-                  style: const TextStyle(fontSize: 10, color: AppTheme.textSecondary),
+                  style: const TextStyle(
+                      fontSize: 10, color: AppTheme.textSecondary),
                 ),
               ],
             ),

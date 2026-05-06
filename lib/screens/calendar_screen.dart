@@ -5,6 +5,7 @@ import '../providers/app_provider.dart';
 import '../models/task.dart';
 import '../theme/app_theme.dart';
 import '../widgets/task_card.dart';
+import '../widgets/app_icon.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -30,7 +31,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('📅 Lịch Công Việc'),
+            title: const Text('Lịch Công Việc'),
             actions: [
               IconButton(
                 icon: const Icon(Icons.today),
@@ -68,16 +69,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ),
                   markersMaxCount: 3,
                   todayTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-                  selectedTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  selectedTextStyle: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 headerStyle: HeaderStyle(
                   formatButtonDecoration: BoxDecoration(
                     border: Border.all(color: AppTheme.primaryColor),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  formatButtonTextStyle: const TextStyle(color: AppTheme.primaryColor),
+                  formatButtonTextStyle:
+                      const TextStyle(color: AppTheme.primaryColor),
                   titleCentered: true,
-                  titleTextStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  titleTextStyle: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 onDaySelected: (selected, focused) {
                   setState(() {
@@ -85,8 +89,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     _focusedDay = focused;
                   });
                 },
-                onFormatChanged: (format) => setState(() => _calendarFormat = format),
-                onPageChanged: (focused) => setState(() => _focusedDay = focused),
+                onFormatChanged: (format) =>
+                    setState(() => _calendarFormat = format),
+                onPageChanged: (focused) =>
+                    setState(() => _focusedDay = focused),
               ),
               const Divider(height: 1),
               Padding(
@@ -96,7 +102,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   children: [
                     Text(
                       '${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}',
-                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                     _DayStatusChips(tasks: selectedTasks),
                   ],
@@ -104,14 +111,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
               Expanded(
                 child: selectedTasks.isEmpty
-                    ? const Center(
+                    ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('🗓️', style: TextStyle(fontSize: 48)),
-                            SizedBox(height: 8),
-                            Text('Không có việc trong ngày này',
-                                style: TextStyle(color: AppTheme.textSecondary)),
+                            SvgIcon(AppIcons.calendar, size: 48),
+                            const SizedBox(height: 8),
+                            const Text('Không có việc trong ngày này',
+                                style:
+                                    TextStyle(color: AppTheme.textSecondary)),
                           ],
                         ),
                       )
@@ -143,7 +151,10 @@ class _DayStatusChips extends StatelessWidget {
     if (total == 0) return const SizedBox.shrink();
     return Row(
       children: [
-        _Chip(label: '$done/$total', color: AppTheme.successColor, icon: Icons.check_circle_outline),
+        _Chip(
+            label: '$done/$total',
+            color: AppTheme.successColor,
+            icon: Icons.check_circle_outline),
       ],
     );
   }
@@ -168,7 +179,9 @@ class _Chip extends StatelessWidget {
         children: [
           Icon(icon, size: 14, color: color),
           const SizedBox(width: 4),
-          Text(label, style: TextStyle(fontSize: 12, color: color, fontWeight: FontWeight.bold)),
+          Text(label,
+              style: TextStyle(
+                  fontSize: 12, color: color, fontWeight: FontWeight.bold)),
         ],
       ),
     );
