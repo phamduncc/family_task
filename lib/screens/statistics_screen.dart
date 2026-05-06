@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../providers/app_provider.dart';
 import '../models/task.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_icon.dart';
 
 class StatisticsScreen extends StatelessWidget {
   const StatisticsScreen({super.key});
@@ -19,7 +20,7 @@ class StatisticsScreen extends StatelessWidget {
         final rate = total > 0 ? (completed / total * 100).round() : 0;
 
         return Scaffold(
-          appBar: AppBar(title: const Text('📊 Thống Kê & Báo Cáo')),
+          appBar: AppBar(title: const Text('Thống Kê & Báo Cáo')),
           body: ListView(
             padding: const EdgeInsets.all(16),
             children: [
@@ -32,7 +33,8 @@ class StatisticsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               if (total > 0) ...[
-                _PieChartCard(completed: completed, pending: pending, overdue: overdue),
+                _PieChartCard(
+                    completed: completed, pending: pending, overdue: overdue),
                 const SizedBox(height: 20),
               ],
               _MemberRankings(provider: provider),
@@ -72,10 +74,14 @@ class _OverallStats extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Tổng Quan', style: TextStyle(color: Colors.white70, fontSize: 13)),
+          const Text('Tổng Quan',
+              style: TextStyle(color: Colors.white70, fontSize: 13)),
           const SizedBox(height: 6),
           Text('$rate% hoàn thành',
-              style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           ClipRRect(
             borderRadius: BorderRadius.circular(6),
@@ -90,10 +96,24 @@ class _OverallStats extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _OverallItem(label: 'Tổng', value: '$total', emoji: '📋'),
-              _OverallItem(label: 'Hoàn thành', value: '$completed', emoji: '✅'),
-              _OverallItem(label: 'Chờ làm', value: '$pending', emoji: '⏳'),
-              _OverallItem(label: 'Quá hạn', value: '$overdue', emoji: '⚠️'),
+              _OverallItem(
+                  label: 'Tổng',
+                  value: '$total',
+                  icon: SvgIcon(AppIcons.task, size: 22, color: Colors.white)),
+              _OverallItem(
+                  label: 'Hoàn thành',
+                  value: '$completed',
+                  icon: SvgIcon(AppIcons.check, size: 22, color: Colors.white)),
+              _OverallItem(
+                  label: 'Chờ làm',
+                  value: '$pending',
+                  icon: SvgIcon(AppIcons.hourglass,
+                      size: 22, color: Colors.white)),
+              _OverallItem(
+                  label: 'Quá hạn',
+                  value: '$overdue',
+                  icon: const Icon(Icons.warning_amber_rounded,
+                      size: 22, color: Colors.white)),
             ],
           ),
         ],
@@ -103,17 +123,24 @@ class _OverallStats extends StatelessWidget {
 }
 
 class _OverallItem extends StatelessWidget {
-  final String label, value, emoji;
-  const _OverallItem({required this.label, required this.value, required this.emoji});
+  final String label, value;
+  final Widget icon;
+  const _OverallItem(
+      {required this.label, required this.value, required this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 20)),
+        icon,
         const SizedBox(height: 4),
-        Text(value, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-        Text(label, style: const TextStyle(color: Colors.white70, fontSize: 10)),
+        Text(value,
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold)),
+        Text(label,
+            style: const TextStyle(color: Colors.white70, fontSize: 10)),
       ],
     );
   }
@@ -121,7 +148,8 @@ class _OverallItem extends StatelessWidget {
 
 class _PieChartCard extends StatefulWidget {
   final int completed, pending, overdue;
-  const _PieChartCard({required this.completed, required this.pending, required this.overdue});
+  const _PieChartCard(
+      {required this.completed, required this.pending, required this.overdue});
 
   @override
   State<_PieChartCard> createState() => _PieChartCardState();
@@ -138,21 +166,24 @@ class _PieChartCardState extends State<_PieChartCard> {
         value: widget.completed.toDouble(),
         title: widget.completed > 0 ? '${widget.completed}' : '',
         radius: _touchedIndex == 0 ? 65 : 55,
-        titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+        titleStyle: const TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
       ),
       PieChartSectionData(
         color: AppTheme.accentColor,
         value: widget.pending.toDouble(),
         title: widget.pending > 0 ? '${widget.pending}' : '',
         radius: _touchedIndex == 1 ? 65 : 55,
-        titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+        titleStyle: const TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
       ),
       PieChartSectionData(
         color: AppTheme.dangerColor,
         value: widget.overdue.toDouble(),
         title: widget.overdue > 0 ? '${widget.overdue}' : '',
         radius: _touchedIndex == 2 ? 65 : 55,
-        titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+        titleStyle: const TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
       ),
     ].where((s) => s.value > 0).toList();
 
@@ -163,7 +194,9 @@ class _PieChartCardState extends State<_PieChartCard> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)],
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,7 +220,8 @@ class _PieChartCardState extends State<_PieChartCard> {
                               _touchedIndex = -1;
                               return;
                             }
-                            _touchedIndex = response.touchedSection!.touchedSectionIndex;
+                            _touchedIndex =
+                                response.touchedSection!.touchedSectionIndex;
                           });
                         },
                       ),
@@ -227,7 +261,10 @@ class _Legend extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(width: 12, height: 12, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+        Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
         const SizedBox(width: 8),
         Text(label, style: const TextStyle(fontSize: 13)),
       ],
@@ -251,13 +288,19 @@ class _MemberRankings extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)],
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('🏆 Bảng Xếp Hạng',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+          Row(children: [
+            SvgIcon(AppIcons.trophy, size: 18),
+            const SizedBox(width: 6),
+            const Text('Bảng Xếp Hạng',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+          ]),
           const SizedBox(height: 14),
           ...ranked.asMap().entries.map((entry) {
             final rank = entry.key;
@@ -265,12 +308,21 @@ class _MemberRankings extends StatelessWidget {
             final memberTasks = provider.tasks
                 .where((t) => t.assignedMemberIds.contains(member.id))
                 .toList();
-            final completedCount =
-                memberTasks.where((t) => t.status == TaskStatus.completed).length;
+            final completedCount = memberTasks
+                .where((t) => t.status == TaskStatus.completed)
+                .length;
             final total = memberTasks.length;
             final rate = total > 0 ? (completedCount / total * 100).round() : 0;
-            final rankEmojis = ['🥇', '🥈', '🥉'];
-            final rankEmoji = rank < 3 ? rankEmojis[rank] : '${rank + 1}.';
+            final rankSvgs = [
+              AppIcons.medal,
+              AppIcons.medalSilver,
+              AppIcons.medalBronze
+            ];
+            final rankWidget = rank < 3
+                ? SvgIcon(rankSvgs[rank], size: 22)
+                : Text('${rank + 1}.',
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold));
 
             return Container(
               margin: const EdgeInsets.only(bottom: 10),
@@ -281,31 +333,38 @@ class _MemberRankings extends StatelessWidget {
                     : Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: rank == 0 ? AppTheme.warningColor.withOpacity(0.3) : Colors.transparent,
+                  color: rank == 0
+                      ? AppTheme.warningColor.withOpacity(0.3)
+                      : Colors.transparent,
                 ),
               ),
               child: Row(
                 children: [
-                  Text(rankEmoji, style: const TextStyle(fontSize: 22)),
+                  rankWidget,
                   const SizedBox(width: 10),
-                  Text(member.avatarEmoji, style: const TextStyle(fontSize: 24)),
+                  MemberAvatar(avatarKey: member.avatarEmoji, size: 32),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(member.name,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14)),
                         Text('$completedCount/$total việc · $rate% đúng hạn',
-                            style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+                            style: const TextStyle(
+                                fontSize: 12, color: AppTheme.textSecondary)),
                         const SizedBox(height: 4),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(4),
                           child: LinearProgressIndicator(
                             value: total > 0 ? completedCount / total : 0,
-                            backgroundColor: AppTheme.accentColor.withOpacity(0.15),
+                            backgroundColor:
+                                AppTheme.accentColor.withOpacity(0.15),
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              rank == 0 ? AppTheme.warningColor : AppTheme.accentColor,
+                              rank == 0
+                                  ? AppTheme.warningColor
+                                  : AppTheme.accentColor,
                             ),
                             minHeight: 5,
                           ),
@@ -316,9 +375,11 @@ class _MemberRankings extends StatelessWidget {
                   const SizedBox(width: 10),
                   Column(
                     children: [
-                      Text('⭐', style: const TextStyle(fontSize: 16)),
+                      SvgIcon(AppIcons.star,
+                          size: 16, color: AppTheme.warningColor),
                       Text('${member.totalPoints}',
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15)),
                     ],
                   ),
                 ],
@@ -349,19 +410,37 @@ class _PriorityBreakdown extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)],
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('🎯 Phân Loại Ưu Tiên',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+          Row(children: [
+            const Icon(Icons.tune_rounded, size: 18),
+            const SizedBox(width: 6),
+            const Text('Phân Loại Ưu Tiên',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+          ]),
           const SizedBox(height: 14),
-          _PriorityBar(label: '🔴 Cao', count: high, total: total, color: AppTheme.priorityHigh),
+          _PriorityBar(
+              label: 'Cao',
+              count: high,
+              total: total,
+              color: AppTheme.priorityHigh),
           const SizedBox(height: 8),
-          _PriorityBar(label: '🟡 Trung bình', count: medium, total: total, color: AppTheme.priorityMedium),
+          _PriorityBar(
+              label: 'Trung bình',
+              count: medium,
+              total: total,
+              color: AppTheme.priorityMedium),
           const SizedBox(height: 8),
-          _PriorityBar(label: '🟢 Thấp', count: low, total: total, color: AppTheme.priorityLow),
+          _PriorityBar(
+              label: 'Thấp',
+              count: low,
+              total: total,
+              color: AppTheme.priorityLow),
         ],
       ),
     );
@@ -372,14 +451,20 @@ class _PriorityBar extends StatelessWidget {
   final String label;
   final int count, total;
   final Color color;
-  const _PriorityBar({required this.label, required this.count, required this.total, required this.color});
+  const _PriorityBar(
+      {required this.label,
+      required this.count,
+      required this.total,
+      required this.color});
 
   @override
   Widget build(BuildContext context) {
     final ratio = total > 0 ? count / total : 0.0;
     return Row(
       children: [
-        SizedBox(width: 100, child: Text(label, style: const TextStyle(fontSize: 13))),
+        SizedBox(
+            width: 100,
+            child: Text(label, style: const TextStyle(fontSize: 13))),
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(6),
@@ -392,7 +477,9 @@ class _PriorityBar extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        Text('$count', style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 13)),
+        Text('$count',
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: color, fontSize: 13)),
       ],
     );
   }

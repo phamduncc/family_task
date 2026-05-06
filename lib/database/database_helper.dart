@@ -96,7 +96,7 @@ class DatabaseHelper {
     await db.insert('members', {
       'name': 'Bố',
       'role': 'Bố',
-      'avatarEmoji': '👨',
+      'avatarEmoji': 'father',
       'totalPoints': 0,
       'streakDays': 0,
       'createdAt': DateTime.now().toIso8601String(),
@@ -104,7 +104,7 @@ class DatabaseHelper {
     await db.insert('members', {
       'name': 'Mẹ',
       'role': 'Mẹ',
-      'avatarEmoji': '👩',
+      'avatarEmoji': 'mother',
       'totalPoints': 0,
       'streakDays': 0,
       'createdAt': DateTime.now().toIso8601String(),
@@ -112,7 +112,7 @@ class DatabaseHelper {
     await db.insert('members', {
       'name': 'Con',
       'role': 'Con',
-      'avatarEmoji': '🧒',
+      'avatarEmoji': 'boy',
       'totalPoints': 0,
       'streakDays': 0,
       'createdAt': DateTime.now().toIso8601String(),
@@ -122,42 +122,42 @@ class DatabaseHelper {
       {
         'name': 'Chăm Chỉ',
         'description': 'Hoàn thành việc 7 ngày liên tiếp',
-        'emoji': '🔥',
+        'emoji': 'timer',
         'condition': 'streak',
         'requiredValue': 7
       },
       {
         'name': 'Siêu Nhân Việc Nhà',
         'description': 'Hoàn thành 50 công việc',
-        'emoji': '🦸',
+        'emoji': 'trophy',
         'condition': 'total_tasks',
         'requiredValue': 50
       },
       {
         'name': 'Khởi Đầu Tốt',
         'description': 'Hoàn thành công việc đầu tiên',
-        'emoji': '⭐',
+        'emoji': 'star',
         'condition': 'total_tasks',
         'requiredValue': 1
       },
       {
         'name': 'Thành Viên Tích Cực',
         'description': 'Hoàn thành 10 công việc',
-        'emoji': '🏅',
+        'emoji': 'medal',
         'condition': 'total_tasks',
         'requiredValue': 10
       },
       {
         'name': 'Vô Địch Điểm Số',
         'description': 'Đạt 500 điểm',
-        'emoji': '🏆',
+        'emoji': 'trophy',
         'condition': 'points',
         'requiredValue': 500
       },
       {
         'name': 'Nhà Vô Địch',
         'description': 'Đạt 1000 điểm',
-        'emoji': '👑',
+        'emoji': 'medal_1',
         'condition': 'points',
         'requiredValue': 1000
       },
@@ -170,35 +170,35 @@ class DatabaseHelper {
       {
         'name': 'Xem Phim',
         'description': 'Được chọn phim để cả nhà cùng xem',
-        'emoji': '🎬',
+        'emoji': 'video_player',
         'pointCost': 100,
         'isRedeemed': 0
       },
       {
         'name': 'Đi Chơi',
         'description': 'Được chọn địa điểm vui chơi cuối tuần',
-        'emoji': '🎡',
+        'emoji': 'playground',
         'pointCost': 200,
         'isRedeemed': 0
       },
       {
         'name': 'Mua Đồ Chơi',
         'description': 'Được mua một món đồ chơi yêu thích',
-        'emoji': '🎮',
+        'emoji': 'joystick',
         'pointCost': 300,
         'isRedeemed': 0
       },
       {
         'name': 'Ăn Ngoài',
         'description': 'Được chọn nhà hàng ăn tối',
-        'emoji': '🍕',
+        'emoji': 'pizza',
         'pointCost': 150,
         'isRedeemed': 0
       },
       {
         'name': 'Không Làm Việc Một Ngày',
         'description': 'Được nghỉ việc nhà một ngày',
-        'emoji': '🛋️',
+        'emoji': 'cancan',
         'pointCost': 250,
         'isRedeemed': 0
       },

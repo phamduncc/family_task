@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/app_provider.dart';
 import '../models/reward.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_icon.dart';
 
 class GamificationScreen extends StatefulWidget {
   const GamificationScreen({super.key});
@@ -33,16 +34,16 @@ class _GamificationScreenState extends State<GamificationScreen>
       builder: (context, provider, _) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('🎮 Gamification'),
+            title: const Text('Gamification'),
             bottom: TabBar(
               controller: _tabController,
               labelColor: Colors.white,
               unselectedLabelColor: Colors.white60,
               indicatorColor: Colors.white,
               tabs: const [
-                Tab(text: '🏆 Điểm'),
-                Tab(text: '🏅 Huy Hiệu'),
-                Tab(text: '🎁 Phần Thưởng'),
+                Tab(text: 'Điểm'),
+                Tab(text: 'Huy Hiệu'),
+                Tab(text: 'Phần Thưởng'),
               ],
             ),
           ),
@@ -84,47 +85,77 @@ class _PointsTab extends StatelessWidget {
           ),
           child: Column(
             children: [
-              const Text('🏆 Bảng Xếp Hạng', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                SvgIcon(AppIcons.trophy, size: 22, color: Colors.white),
+                const SizedBox(width: 8),
+                const Text('Bảng Xếp Hạng',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
+              ]),
               const SizedBox(height: 4),
-              const Text('Ai chăm chỉ nhất tháng này?', style: TextStyle(color: Colors.white70, fontSize: 13)),
+              const Text('Ai chăm chỉ nhất tháng này?',
+                  style: TextStyle(color: Colors.white70, fontSize: 13)),
               const SizedBox(height: 16),
               if (ranked.isNotEmpty) _TopPodium(ranked: ranked),
             ],
           ),
         ),
         const SizedBox(height: 20),
-        const Text('📊 Chi Tiết Điểm',
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+        Row(children: [
+          SvgIcon(AppIcons.star, size: 16, color: AppTheme.warningColor),
+          const SizedBox(width: 6),
+          const Text('Chi Tiết Điểm',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+        ]),
         const SizedBox(height: 10),
         ...ranked.asMap().entries.map((entry) {
           final rank = entry.key + 1;
           final member = entry.value;
-          final rankEmoji = rank == 1 ? '🥇' : rank == 2 ? '🥈' : rank == 3 ? '🥉' : '$rank.';
+          final rankWidget = rank == 1
+              ? SvgIcon(AppIcons.medal, size: 22)
+              : rank == 2
+                  ? SvgIcon(AppIcons.medalSilver, size: 22)
+                  : rank == 3
+                      ? SvgIcon(AppIcons.medalBronze, size: 22)
+                      : Text('$rank.',
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold));
           return Container(
             margin: const EdgeInsets.only(bottom: 10),
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 6)],
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 6)
+              ],
             ),
             child: Row(
               children: [
-                Text(rankEmoji, style: const TextStyle(fontSize: 22)),
+                rankWidget,
                 const SizedBox(width: 10),
-                Text(member.avatarEmoji, style: const TextStyle(fontSize: 28)),
+                MemberAvatar(avatarKey: member.avatarEmoji, size: 36),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(member.name,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15)),
                       Text(member.role,
-                          style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+                          style: const TextStyle(
+                              fontSize: 12, color: AppTheme.textSecondary)),
                       if (member.streakDays > 0)
-                        Text('🔥 ${member.streakDays} ngày liên tiếp',
-                            style: const TextStyle(fontSize: 12, color: AppTheme.dangerColor)),
+                        Row(mainAxisSize: MainAxisSize.min, children: [
+                          const Icon(Icons.local_fire_department,
+                              size: 14, color: AppTheme.dangerColor),
+                          Text(' ${member.streakDays} ngày liên tiếp',
+                              style: const TextStyle(
+                                  fontSize: 12, color: AppTheme.dangerColor)),
+                        ]),
                     ],
                   ),
                 ),
@@ -135,10 +166,14 @@ class _PointsTab extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: rank == 1 ? AppTheme.warningColor : AppTheme.textPrimary,
+                        color: rank == 1
+                            ? AppTheme.warningColor
+                            : AppTheme.textPrimary,
                       ),
                     ),
-                    const Text('điểm', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                    const Text('điểm',
+                        style: TextStyle(
+                            fontSize: 11, color: AppTheme.textSecondary)),
                   ],
                 ),
               ],
@@ -160,11 +195,13 @@ class _TopPodium extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        if (ranked.length > 1) _PodiumItem(member: ranked[1], rank: 2, height: 70),
+        if (ranked.length > 1)
+          _PodiumItem(member: ranked[1], rank: 2, height: 70),
         const SizedBox(width: 8),
         _PodiumItem(member: ranked[0], rank: 1, height: 90),
         const SizedBox(width: 8),
-        if (ranked.length > 2) _PodiumItem(member: ranked[2], rank: 3, height: 55),
+        if (ranked.length > 2)
+          _PodiumItem(member: ranked[2], rank: 3, height: 55),
       ],
     );
   }
@@ -174,18 +211,29 @@ class _PodiumItem extends StatelessWidget {
   final dynamic member;
   final int rank;
   final double height;
-  const _PodiumItem({required this.member, required this.rank, required this.height});
+  const _PodiumItem(
+      {required this.member, required this.rank, required this.height});
 
   @override
   Widget build(BuildContext context) {
-    final rankEmoji = rank == 1 ? '🥇' : rank == 2 ? '🥈' : '🥉';
+    final rankSvg = rank == 1
+        ? AppIcons.medal
+        : rank == 2
+            ? AppIcons.medalSilver
+            : AppIcons.medalBronze;
     return Column(
       children: [
-        Text(member.avatarEmoji, style: const TextStyle(fontSize: 28)),
+        SvgIcon.auto(member.avatarEmoji, size: 28),
         Text(member.name,
-            style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
-        Text('${member.totalPoints}⭐',
-            style: const TextStyle(color: Colors.white70, fontSize: 11)),
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.bold)),
+        Row(mainAxisSize: MainAxisSize.min, children: [
+          Text('${member.totalPoints}',
+              style: const TextStyle(color: Colors.white70, fontSize: 11)),
+          SvgIcon(AppIcons.star, size: 11, color: Colors.white70),
+        ]),
         const SizedBox(height: 4),
         Container(
           width: 70,
@@ -197,8 +245,10 @@ class _PodiumItem extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(rankEmoji, style: const TextStyle(fontSize: 24)),
-              Text('$rank', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              SvgIcon(rankSvg, size: 28),
+              Text('$rank',
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
@@ -226,27 +276,34 @@ class _BadgesTab extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(20),
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)],
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)
+              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Text(member.avatarEmoji, style: const TextStyle(fontSize: 26)),
+                    MemberAvatar(avatarKey: member.avatarEmoji, size: 30),
                     const SizedBox(width: 10),
                     Text(member.name,
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
                     const Spacer(),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
                         color: AppTheme.warningColor.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         '${memberBadges.length}/${provider.badges.length} huy hiệu',
-                        style: const TextStyle(fontSize: 12, color: AppTheme.warningColor, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 12,
+                            color: AppTheme.warningColor,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -277,14 +334,31 @@ class _BadgesTab extends StatelessWidget {
                           children: [
                             ColorFiltered(
                               colorFilter: isEarned
-                                  ? const ColorFilter.mode(Colors.transparent, BlendMode.saturation)
+                                  ? const ColorFilter.mode(
+                                      Colors.transparent, BlendMode.saturation)
                                   : const ColorFilter.matrix([
-                                      0.2126, 0.7152, 0.0722, 0, 0,
-                                      0.2126, 0.7152, 0.0722, 0, 0,
-                                      0.2126, 0.7152, 0.0722, 0, 0,
-                                      0, 0, 0, 0.3, 0,
+                                      0.2126,
+                                      0.7152,
+                                      0.0722,
+                                      0,
+                                      0,
+                                      0.2126,
+                                      0.7152,
+                                      0.0722,
+                                      0,
+                                      0,
+                                      0.2126,
+                                      0.7152,
+                                      0.0722,
+                                      0,
+                                      0,
+                                      0,
+                                      0,
+                                      0,
+                                      0.3,
+                                      0,
                                     ]),
-                              child: Text(badge.emoji, style: const TextStyle(fontSize: 26)),
+                              child: SvgIcon.auto(badge.emoji, size: 26),
                             ),
                             const SizedBox(height: 4),
                             Text(
@@ -292,7 +366,9 @@ class _BadgesTab extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 9,
                                 fontWeight: FontWeight.bold,
-                                color: isEarned ? AppTheme.textPrimary : AppTheme.textSecondary,
+                                color: isEarned
+                                    ? AppTheme.textPrimary
+                                    : AppTheme.textSecondary,
                               ),
                               textAlign: TextAlign.center,
                               maxLines: 2,
@@ -313,21 +389,30 @@ class _BadgesTab extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)],
+            boxShadow: [
+              BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('📖 Tất Cả Huy Hiệu',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              Row(children: [
+                SvgIcon(AppIcons.task, size: 16),
+                const SizedBox(width: 6),
+                const Text('Tất Cả Huy Hiệu',
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              ]),
               const SizedBox(height: 12),
               ...provider.badges.map((badge) => ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Text(badge.emoji, style: const TextStyle(fontSize: 28)),
-                title: Text(badge.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text(badge.description,
-                    style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
-              )),
+                    contentPadding: EdgeInsets.zero,
+                    leading: SvgIcon.auto(badge.emoji, size: 28),
+                    title: Text(badge.name,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text(badge.description,
+                        style: const TextStyle(
+                            fontSize: 12, color: AppTheme.textSecondary)),
+                  )),
             ],
           ),
         ),
@@ -349,7 +434,7 @@ class _RewardsTabState extends State<_RewardsTab> {
     final nameCtrl = TextEditingController();
     final descCtrl = TextEditingController();
     final pointCtrl = TextEditingController(text: '100');
-    String emoji = '🎁';
+    String rewardIconKey = 'cancan';
 
     showDialog(
       context: context,
@@ -362,19 +447,26 @@ class _RewardsTabState extends State<_RewardsTab> {
               children: [
                 Wrap(
                   spacing: 8,
-                  children: ['🎁', '🎬', '🎡', '🎮', '🍕', '🛋️', '🎂', '✈️', '🎯', '🏖️']
-                      .map((e) => GestureDetector(
-                            onTap: () => setDialogState(() => emoji = e),
+                  children: AppIcons.rewardIconKeys
+                      .map((key) => GestureDetector(
+                            onTap: () =>
+                                setDialogState(() => rewardIconKey = key),
                             child: Container(
+                              width: 44,
+                              height: 44,
                               padding: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
-                                color: emoji == e ? AppTheme.primaryColor.withOpacity(0.15) : null,
+                                color: rewardIconKey == key
+                                    ? AppTheme.primaryColor.withOpacity(0.15)
+                                    : null,
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: emoji == e ? AppTheme.primaryColor : Colors.transparent,
+                                  color: rewardIconKey == key
+                                      ? AppTheme.primaryColor
+                                      : Colors.transparent,
                                 ),
                               ),
-                              child: Text(e, style: const TextStyle(fontSize: 24)),
+                              child: SvgIcon.fromKey(key, size: 28),
                             ),
                           ))
                       .toList(),
@@ -382,31 +474,38 @@ class _RewardsTabState extends State<_RewardsTab> {
                 const SizedBox(height: 12),
                 TextField(
                   controller: nameCtrl,
-                  decoration: const InputDecoration(labelText: 'Tên phần thưởng', border: OutlineInputBorder()),
+                  decoration: const InputDecoration(
+                      labelText: 'Tên phần thưởng',
+                      border: OutlineInputBorder()),
                 ),
                 const SizedBox(height: 8),
                 TextField(
                   controller: descCtrl,
-                  decoration: const InputDecoration(labelText: 'Mô tả', border: OutlineInputBorder()),
+                  decoration: const InputDecoration(
+                      labelText: 'Mô tả', border: OutlineInputBorder()),
                 ),
                 const SizedBox(height: 8),
                 TextField(
                   controller: pointCtrl,
-                  decoration: const InputDecoration(labelText: 'Điểm cần thiết', border: OutlineInputBorder()),
+                  decoration: const InputDecoration(
+                      labelText: 'Điểm cần thiết',
+                      border: OutlineInputBorder()),
                   keyboardType: TextInputType.number,
                 ),
               ],
             ),
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Hủy')),
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Hủy')),
             ElevatedButton(
               onPressed: () {
                 if (nameCtrl.text.trim().isEmpty) return;
                 widget.provider.addReward(Reward(
                   name: nameCtrl.text.trim(),
                   description: descCtrl.text.trim(),
-                  emoji: emoji,
+                  emoji: rewardIconKey,
                   pointCost: int.tryParse(pointCtrl.text) ?? 100,
                 ));
                 Navigator.pop(context);
@@ -423,34 +522,50 @@ class _RewardsTabState extends State<_RewardsTab> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('${reward.emoji} ${reward.name}'),
+        title: Row(mainAxisSize: MainAxisSize.min, children: [
+          SvgIcon.auto(reward.emoji, size: 22),
+          const SizedBox(width: 8),
+          Text(reward.name),
+        ]),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(reward.description),
             const SizedBox(height: 8),
-            Text('Cần: ${reward.pointCost} ⭐ điểm',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            Row(children: [
+              const Text('Cần: ',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              SvgIcon(AppIcons.star, size: 14, color: AppTheme.warningColor),
+              Text(' ${reward.pointCost} điểm',
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
+            ]),
             const SizedBox(height: 12),
             const Text('Chọn thành viên đổi thưởng:',
                 style: TextStyle(fontWeight: FontWeight.w600)),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Hủy')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Hủy')),
           ...widget.provider.members.map((m) => ElevatedButton(
                 onPressed: m.totalPoints >= reward.pointCost
                     ? () {
                         widget.provider.redeemReward(reward.id!, m.id!);
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('${m.name} đã đổi "${reward.name}" 🎉'),
+                          content: Text('${m.name} đã đổi "${reward.name}"'),
                           backgroundColor: AppTheme.successColor,
                         ));
                       }
                     : null,
-                child: Text('${m.avatarEmoji} ${m.name}\n(${m.totalPoints}⭐)'),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  MemberAvatar(avatarKey: m.avatarEmoji, size: 24),
+                  Text('${m.name}\n(${m.totalPoints}pts)',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 11)),
+                ]),
               )),
         ],
       ),
@@ -479,16 +594,20 @@ class _RewardsTabState extends State<_RewardsTab> {
             ),
             child: Row(
               children: [
-                const Text('🎁', style: TextStyle(fontSize: 40)),
+                SvgIcon(AppIcons.cancan, size: 44),
                 const SizedBox(width: 14),
                 const Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Cửa Hàng Phần Thưởng',
-                          style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
                       Text('Dùng điểm để đổi phần thưởng!',
-                          style: TextStyle(color: Colors.white70, fontSize: 12)),
+                          style:
+                              TextStyle(color: Colors.white70, fontSize: 12)),
                     ],
                   ),
                 ),
@@ -500,7 +619,8 @@ class _RewardsTabState extends State<_RewardsTab> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Có sẵn (${available.length})',
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold)),
               TextButton.icon(
                 onPressed: () => _showAddRewardDialog(context),
                 icon: const Icon(Icons.add, size: 18),
@@ -537,13 +657,16 @@ class _RewardsTabState extends State<_RewardsTab> {
                     builder: (_) => AlertDialog(
                       title: const Text('Xóa phần thưởng?'),
                       actions: [
-                        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Hủy')),
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Hủy')),
                         TextButton(
                           onPressed: () {
                             widget.provider.deleteReward(reward.id!);
                             Navigator.pop(context);
                           },
-                          child: const Text('Xóa', style: TextStyle(color: AppTheme.dangerColor)),
+                          child: const Text('Xóa',
+                              style: TextStyle(color: AppTheme.dangerColor)),
                         ),
                       ],
                     ),
@@ -552,28 +675,40 @@ class _RewardsTabState extends State<_RewardsTab> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(16),
-                      boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 8)],
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.06),
+                            blurRadius: 8)
+                      ],
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(reward.emoji, style: const TextStyle(fontSize: 36)),
+                        SvgIcon.auto(reward.emoji, size: 36),
                         const SizedBox(height: 6),
                         Text(reward.name,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 13),
                             textAlign: TextAlign.center),
                         const SizedBox(height: 4),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 3),
                           decoration: BoxDecoration(
                             color: AppTheme.warningColor.withOpacity(0.15),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Text(
-                            '⭐ ${reward.pointCost} điểm',
-                            style: const TextStyle(
-                                fontSize: 12, color: AppTheme.warningColor, fontWeight: FontWeight.bold),
-                          ),
+                          child: Row(mainAxisSize: MainAxisSize.min, children: [
+                            SvgIcon(AppIcons.star,
+                                size: 12, color: AppTheme.warningColor),
+                            Text(
+                              ' ${reward.pointCost} điểm',
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.warningColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ]),
                         ),
                       ],
                     ),
@@ -583,8 +718,13 @@ class _RewardsTabState extends State<_RewardsTab> {
             ),
           if (redeemed.isNotEmpty) ...[
             const SizedBox(height: 20),
-            Text('✅ Đã Đổi (${redeemed.length})',
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+            Row(children: [
+              SvgIcon(AppIcons.check, size: 16, color: AppTheme.successColor),
+              const SizedBox(width: 6),
+              Text('Đã Đổi (${redeemed.length})',
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold)),
+            ]),
             const SizedBox(height: 10),
             ...redeemed.map((reward) {
               final member = reward.redeemedByMemberId != null
@@ -596,24 +736,35 @@ class _RewardsTabState extends State<_RewardsTab> {
                 decoration: BoxDecoration(
                   color: AppTheme.successColor.withOpacity(0.08),
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppTheme.successColor.withOpacity(0.2)),
+                  border:
+                      Border.all(color: AppTheme.successColor.withOpacity(0.2)),
                 ),
                 child: Row(
                   children: [
-                    Text(reward.emoji, style: const TextStyle(fontSize: 28)),
+                    SvgIcon.auto(reward.emoji, size: 28),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(reward.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text(reward.name,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           if (member != null)
-                            Text('Đổi bởi: ${member.avatarEmoji} ${member.name}',
-                                style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+                            Row(children: [
+                              MemberAvatar(
+                                  avatarKey: member.avatarEmoji, size: 16),
+                              const SizedBox(width: 4),
+                              Text('Đổi bởi: ${member.name}',
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      color: AppTheme.textSecondary)),
+                            ]),
                         ],
                       ),
                     ),
-                    const Icon(Icons.check_circle, color: AppTheme.successColor),
+                    const Icon(Icons.check_circle,
+                        color: AppTheme.successColor),
                   ],
                 ),
               );

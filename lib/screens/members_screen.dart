@@ -4,6 +4,7 @@ import '../providers/app_provider.dart';
 import '../models/member.dart';
 import '../models/task.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_icon.dart';
 
 class MembersScreen extends StatelessWidget {
   const MembersScreen({super.key});
@@ -14,7 +15,7 @@ class MembersScreen extends StatelessWidget {
       builder: (context, provider, _) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('👨‍👩‍👧‍👦 Thành Viên'),
+            title: const Text('Thành Viên'),
             actions: [
               IconButton(
                 icon: const Icon(Icons.person_add),
@@ -27,7 +28,7 @@ class MembersScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('👨‍👩‍👧', style: TextStyle(fontSize: 64)),
+                      SvgIcon(AppIcons.father, size: 80),
                       const SizedBox(height: 16),
                       const Text('Chưa có thành viên nào',
                           style: TextStyle(
@@ -172,8 +173,7 @@ class _MemberCard extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     child: Center(
-                      child: Text(member.avatarEmoji,
-                          style: const TextStyle(fontSize: 30)),
+                      child: SvgIcon.fromKey(member.avatarEmoji, size: 56),
                     ),
                   ),
                   const SizedBox(width: 14),
@@ -190,13 +190,15 @@ class _MemberCard extends StatelessWidget {
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            const Text('⭐', style: TextStyle(fontSize: 14)),
+                            SvgIcon(AppIcons.star,
+                                size: 14, color: AppTheme.warningColor),
                             Text(' ${member.totalPoints} điểm',
                                 style: const TextStyle(
                                     fontSize: 13, fontWeight: FontWeight.w600)),
                             if (member.streakDays > 0) ...[
                               const SizedBox(width: 10),
-                              const Text('🔥', style: TextStyle(fontSize: 14)),
+                              const Icon(Icons.local_fire_department,
+                                  size: 14, color: AppTheme.dangerColor),
                               Text(' ${member.streakDays} ngày',
                                   style: const TextStyle(
                                       fontSize: 13,
@@ -304,29 +306,16 @@ class _MemberFormState extends State<_MemberForm> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _roleController;
-  String _selectedEmoji = '👤';
+  String _selectedEmoji = 'father';
 
-  final List<String> _emojis = [
-    '👨',
-    '👩',
-    '🧒',
-    '👧',
-    '👦',
-    '👴',
-    '👵',
-    '🧑',
-    '👤',
-    '🐻',
-    '🐱',
-    '⭐'
-  ];
+  final List<String> _avatarKeys = AppIcons.memberAvatarKeys;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.member?.name ?? '');
     _roleController = TextEditingController(text: widget.member?.role ?? '');
-    _selectedEmoji = widget.member?.avatarEmoji ?? '👤';
+    _selectedEmoji = widget.member?.avatarEmoji ?? 'father';
   }
 
   @override
@@ -372,33 +361,57 @@ class _MemberFormState extends State<_MemberForm> {
                 style: TextStyle(fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
             SizedBox(
-              height: 56,
+              height: 80,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: _emojis.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 8),
-                itemBuilder: (_, i) => GestureDetector(
-                  onTap: () => setState(() => _selectedEmoji = _emojis[i]),
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _selectedEmoji == _emojis[i]
-                          ? AppTheme.primaryColor.withOpacity(0.15)
-                          : Colors.grey.withOpacity(0.1),
-                      border: Border.all(
-                        color: _selectedEmoji == _emojis[i]
-                            ? AppTheme.primaryColor
-                            : Colors.transparent,
-                        width: 2,
-                      ),
+                itemCount: _avatarKeys.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 10),
+                itemBuilder: (_, i) {
+                  final key = _avatarKeys[i];
+                  final isSelected = _selectedEmoji == key;
+                  final label = AppIcons.memberAvatarLabels[key] ?? key;
+                  return GestureDetector(
+                    onTap: () => setState(() => _selectedEmoji = key),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 54,
+                          height: 54,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isSelected
+                                ? AppTheme.primaryColor.withOpacity(0.15)
+                                : Colors.grey.withOpacity(0.1),
+                            border: Border.all(
+                              color: isSelected
+                                  ? AppTheme.primaryColor
+                                  : Colors.transparent,
+                              width: 2,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: SvgIcon.fromKey(key),
+                          ),
+                        ),
+                        const SizedBox(height: 3),
+                        Text(
+                          label,
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                            color: isSelected
+                                ? AppTheme.primaryColor
+                                : AppTheme.textSecondary,
+                          ),
+                        ),
+                      ],
                     ),
-                    child: Center(
-                        child: Text(_emojis[i],
-                            style: const TextStyle(fontSize: 26))),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
             const SizedBox(height: 14),
@@ -476,7 +489,12 @@ class MemberDetailScreen extends StatelessWidget {
         final memberBadges = provider.getBadgesForMember(member.id!);
 
         return Scaffold(
-          appBar: AppBar(title: Text('${member.avatarEmoji} ${member.name}')),
+          appBar: AppBar(
+              title: Row(children: [
+            SvgIcon.fromKey(member.avatarEmoji, size: 32),
+            const SizedBox(width: 10),
+            Text(member.name),
+          ])),
           body: ListView(
             padding: const EdgeInsets.all(16),
             children: [
@@ -488,25 +506,39 @@ class MemberDetailScreen extends StatelessWidget {
                   points: member.totalPoints),
               const SizedBox(height: 20),
               if (memberBadges.isNotEmpty) ...[
-                const Text('🏅 Huy Hiệu Đạt Được',
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Row(children: [
+                  SvgIcon(AppIcons.medal, size: 18),
+                  const SizedBox(width: 6),
+                  const Text('Huy Hiệu Đạt Được',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                ]),
                 const SizedBox(height: 10),
                 _BadgesRow(memberBadges: memberBadges, provider: provider),
                 const SizedBox(height: 20),
               ],
-              const Text('📋 Công Việc Đang Chờ',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Row(children: [
+                SvgIcon(AppIcons.task, size: 18),
+                const SizedBox(width: 6),
+                const Text('Công Việc Đang Chờ',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ]),
               const SizedBox(height: 10),
               if (pending.isEmpty)
                 const Center(
-                    child: Text('Không có việc chờ 🎉',
+                    child: Text('Không có việc chờ!',
                         style: TextStyle(color: AppTheme.textSecondary)))
               else
                 ...pending.take(5).map((t) => _SimpleTaskTile(task: t)),
               const SizedBox(height: 20),
-              const Text('✅ Đã Hoàn Thành',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Row(children: [
+                SvgIcon(AppIcons.check, size: 18),
+                const SizedBox(width: 6),
+                const Text('Đã Hoàn Thành',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ]),
               const SizedBox(height: 10),
               if (completed.isEmpty)
                 const Center(
@@ -542,7 +574,7 @@ class _ProfileHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(member.avatarEmoji, style: const TextStyle(fontSize: 64)),
+          SvgIcon.fromKey(member.avatarEmoji, size: 72),
           const SizedBox(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -556,7 +588,7 @@ class _ProfileHeader extends StatelessWidget {
                   style: const TextStyle(fontSize: 14, color: Colors.white70)),
               const SizedBox(height: 8),
               Row(children: [
-                const Text('⭐', style: TextStyle(fontSize: 16)),
+                SvgIcon(AppIcons.star, size: 16, color: AppTheme.warningColor),
                 Text(' ${member.totalPoints} điểm',
                     style: const TextStyle(
                         fontSize: 15,
@@ -565,7 +597,8 @@ class _ProfileHeader extends StatelessWidget {
               ]),
               if (member.streakDays > 0)
                 Row(children: [
-                  const Text('🔥', style: TextStyle(fontSize: 14)),
+                  const Icon(Icons.local_fire_department,
+                      size: 14, color: Colors.white70),
                   Text(' ${member.streakDays} ngày liên tiếp',
                       style:
                           const TextStyle(fontSize: 13, color: Colors.white70)),
@@ -591,20 +624,32 @@ class _StatsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _StatItem(emoji: '✅', label: 'Đã xong', value: '$completedCount'),
-        _StatItem(emoji: '⏳', label: 'Chờ làm', value: '$pendingCount'),
-        _StatItem(emoji: '⭐', label: 'Điểm', value: '$points'),
+        _StatItem(
+            icon:
+                SvgIcon(AppIcons.check, size: 22, color: AppTheme.successColor),
+            label: 'Đã xong',
+            value: '$completedCount'),
+        _StatItem(
+            icon: SvgIcon(AppIcons.hourglass,
+                size: 22, color: AppTheme.accentColor),
+            label: 'Chờ làm',
+            value: '$pendingCount'),
+        _StatItem(
+            icon:
+                SvgIcon(AppIcons.star, size: 22, color: AppTheme.warningColor),
+            label: 'Điểm',
+            value: '$points'),
       ],
     );
   }
 }
 
 class _StatItem extends StatelessWidget {
-  final String emoji;
+  final Widget icon;
   final String label;
   final String value;
   const _StatItem(
-      {required this.emoji, required this.label, required this.value});
+      {required this.icon, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -621,7 +666,7 @@ class _StatItem extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Text(emoji, style: const TextStyle(fontSize: 22)),
+            icon,
             const SizedBox(height: 4),
             Text(value,
                 style:
@@ -665,7 +710,7 @@ class _BadgesRow extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(badge.emoji, style: const TextStyle(fontSize: 24)),
+                SvgIcon.auto(badge.emoji, size: 24),
                 Text(badge.name,
                     style: const TextStyle(
                         fontSize: 9, fontWeight: FontWeight.bold),
@@ -712,9 +757,12 @@ class _SimpleTaskTile extends StatelessWidget {
               ),
             ),
           ),
-          Text('⭐${task.points}',
-              style:
-                  const TextStyle(fontSize: 11, color: AppTheme.warningColor)),
+          Row(mainAxisSize: MainAxisSize.min, children: [
+            SvgIcon(AppIcons.star, size: 11, color: AppTheme.warningColor),
+            Text('${task.points}',
+                style: const TextStyle(
+                    fontSize: 11, color: AppTheme.warningColor)),
+          ]),
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/task.dart';
 import '../providers/app_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_icon.dart';
 
 class TaskFormScreen extends StatefulWidget {
   final Task? task;
@@ -147,244 +148,286 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            _buildSection('📝 Tên Công Việc', [
-              TextFormField(
-                controller: _titleController,
-                decoration:
-                    _inputDeco('Ví dụ: Lau nhà, Rửa bát...', Icons.title),
-                validator: (v) =>
-                    v == null || v.trim().isEmpty ? 'Vui lòng nhập tên' : null,
-                textCapitalization: TextCapitalization.sentences,
-              ),
-            ]),
+            _buildSection(
+                'Tên Công Việc',
+                [
+                  TextFormField(
+                    controller: _titleController,
+                    decoration:
+                        _inputDeco('Ví dụ: Lau nhà, Rửa bát...', Icons.title),
+                    validator: (v) => v == null || v.trim().isEmpty
+                        ? 'Vui lòng nhập tên'
+                        : null,
+                    textCapitalization: TextCapitalization.sentences,
+                  ),
+                ],
+                icon: SvgIcon(AppIcons.task, size: 16)),
             const SizedBox(height: 16),
-            _buildSection('📋 Ghi Chú', [
-              TextFormField(
-                controller: _noteController,
-                decoration: _inputDeco('Thêm ghi chú chi tiết...', Icons.notes),
-                maxLines: 3,
-                textCapitalization: TextCapitalization.sentences,
-              ),
-            ]),
+            _buildSection(
+                'Ghi Chú',
+                [
+                  TextFormField(
+                    controller: _noteController,
+                    decoration:
+                        _inputDeco('Thêm ghi chú chi tiết...', Icons.notes),
+                    maxLines: 3,
+                    textCapitalization: TextCapitalization.sentences,
+                  ),
+                ],
+                icon: const Icon(Icons.notes, size: 16)),
             const SizedBox(height: 16),
-            _buildSection('🎯 Mức Độ Ưu Tiên', [
-              Row(
-                children: TaskPriority.values.map((p) {
-                  final labels = ['Thấp', 'Trung bình', 'Cao'];
-                  final colors = [
-                    AppTheme.priorityLow,
-                    AppTheme.priorityMedium,
-                    AppTheme.priorityHigh
-                  ];
-                  final emojis = ['🟢', '🟡', '🔴'];
-                  final isSelected = _priority == p;
-                  return Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: GestureDetector(
-                        onTap: () => setState(() => _priority = p),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? colors[p.index].withOpacity(0.15)
-                                : Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isSelected
-                                  ? colors[p.index]
-                                  : Colors.transparent,
-                              width: 2,
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              Text(emojis[p.index],
-                                  style: const TextStyle(fontSize: 20)),
-                              const SizedBox(height: 4),
-                              Text(
-                                labels[p.index],
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: isSelected
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
+            _buildSection(
+                'Mức Độ Ưu Tiên',
+                [
+                  Row(
+                    children: TaskPriority.values.map((p) {
+                      final labels = ['Thấp', 'Trung bình', 'Cao'];
+                      final colors = [
+                        AppTheme.priorityLow,
+                        AppTheme.priorityMedium,
+                        AppTheme.priorityHigh
+                      ];
+                      final dotColors = [
+                        AppTheme.priorityLow,
+                        AppTheme.priorityMedium,
+                        AppTheme.priorityHigh
+                      ];
+                      final isSelected = _priority == p;
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: GestureDetector(
+                            onTap: () => setState(() => _priority = p),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? colors[p.index].withOpacity(0.15)
+                                    : Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
                                   color: isSelected
                                       ? colors[p.index]
-                                      : AppTheme.textSecondary,
+                                      : Colors.transparent,
+                                  width: 2,
                                 ),
                               ),
-                            ],
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      color: dotColors[p.index],
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    labels[p.index],
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: isSelected
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                      color: isSelected
+                                          ? colors[p.index]
+                                          : AppTheme.textSecondary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ]),
+                      );
+                    }).toList(),
+                  ),
+                ],
+                icon: const Icon(Icons.tune_rounded, size: 16)),
             const SizedBox(height: 16),
-            _buildSection('👨‍👩‍👧‍👦 Giao Cho', [
-              if (provider.members.isEmpty)
-                const Text(
-                    'Chưa có thành viên. Vui lòng thêm thành viên trước.',
-                    style: TextStyle(color: AppTheme.textSecondary))
-              else
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: provider.members.map((m) {
-                    final isSelected = _assignedMemberIds.contains(m.id);
-                    return GestureDetector(
-                      onTap: () => setState(() {
-                        if (isSelected) {
-                          _assignedMemberIds.remove(m.id);
-                        } else {
-                          _assignedMemberIds.add(m.id!);
-                        }
-                      }),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? AppTheme.accentColor.withOpacity(0.15)
-                              : Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: isSelected
-                                ? AppTheme.accentColor
-                                : Colors.grey.withOpacity(0.3),
-                            width: 1.5,
+            _buildSection(
+                'Giao Cho',
+                [
+                  if (provider.members.isEmpty)
+                    const Text(
+                        'Chưa có thành viên. Vui lòng thêm thành viên trước.',
+                        style: TextStyle(color: AppTheme.textSecondary))
+                  else
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: provider.members.map((m) {
+                        final isSelected = _assignedMemberIds.contains(m.id);
+                        return GestureDetector(
+                          onTap: () => setState(() {
+                            if (isSelected) {
+                              _assignedMemberIds.remove(m.id);
+                            } else {
+                              _assignedMemberIds.add(m.id!);
+                            }
+                          }),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? AppTheme.accentColor.withOpacity(0.15)
+                                  : Theme.of(context).cardColor,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: isSelected
+                                    ? AppTheme.accentColor
+                                    : Colors.grey.withOpacity(0.3),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SvgIcon.fromKey(m.avatarEmoji, size: 20),
+                                const SizedBox(width: 6),
+                                Text(m.name,
+                                    style: TextStyle(
+                                      fontWeight: isSelected
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                      color: isSelected
+                                          ? AppTheme.accentColor
+                                          : null,
+                                    )),
+                                if (isSelected) ...[
+                                  const SizedBox(width: 4),
+                                  const Icon(Icons.check_circle,
+                                      size: 16, color: AppTheme.accentColor),
+                                ],
+                              ],
+                            ),
                           ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(m.avatarEmoji),
-                            const SizedBox(width: 6),
-                            Text(m.name,
-                                style: TextStyle(
-                                  fontWeight: isSelected
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                  color:
-                                      isSelected ? AppTheme.accentColor : null,
-                                )),
-                            if (isSelected) ...[
-                              const SizedBox(width: 4),
-                              const Icon(Icons.check_circle,
-                                  size: 16, color: AppTheme.accentColor),
-                            ],
-                          ],
+                        );
+                      }).toList(),
+                    ),
+                ],
+                icon: SvgIcon(AppIcons.father, size: 16)),
+            const SizedBox(height: 16),
+            _buildSection(
+                'Thời Hạn',
+                [
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.calendar_today,
+                        color: AppTheme.primaryColor),
+                    title: Text(
+                      _dueDate != null
+                          ? '${_dueDate!.day}/${_dueDate!.month}/${_dueDate!.year} '
+                              '${_dueDate!.hour.toString().padLeft(2, '0')}:${_dueDate!.minute.toString().padLeft(2, '0')}'
+                          : 'Chọn ngày & giờ',
+                      style: TextStyle(
+                          color:
+                              _dueDate != null ? null : AppTheme.textSecondary),
+                    ),
+                    trailing: _dueDate != null
+                        ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () => setState(() => _dueDate = null),
+                          )
+                        : const Icon(Icons.arrow_forward_ios, size: 16),
+                    onTap: _pickDate,
+                  ),
+                ],
+                icon: SvgIcon(AppIcons.calendar, size: 16)),
+            const SizedBox(height: 16),
+            _buildSection(
+                'Nhắc Nhở',
+                [
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading:
+                        const Icon(Icons.alarm, color: AppTheme.primaryColor),
+                    title: Text(
+                      _reminderTime != null
+                          ? 'Nhắc lúc ${_reminderTime!.hour.toString().padLeft(2, '0')}:${_reminderTime!.minute.toString().padLeft(2, '0')}'
+                          : 'Không nhắc',
+                      style: TextStyle(
+                          color: _reminderTime != null
+                              ? null
+                              : AppTheme.textSecondary),
+                    ),
+                    trailing: _reminderTime != null
+                        ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () =>
+                                setState(() => _reminderTime = null),
+                          )
+                        : const Icon(Icons.arrow_forward_ios, size: 16),
+                    onTap: _pickReminderTime,
+                  ),
+                ],
+                icon: SvgIcon(AppIcons.timer, size: 16)),
+            const SizedBox(height: 16),
+            _buildSection(
+                'Lặp Lại',
+                [
+                  DropdownButtonFormField<RepeatType>(
+                    value: _repeatType,
+                    decoration: _inputDeco('Chọn kiểu lặp', Icons.repeat),
+                    items: const [
+                      DropdownMenuItem(
+                          value: RepeatType.none, child: Text('Không lặp')),
+                      DropdownMenuItem(
+                          value: RepeatType.daily, child: Text('Hàng ngày')),
+                      DropdownMenuItem(
+                          value: RepeatType.weekly, child: Text('Hàng tuần')),
+                      DropdownMenuItem(
+                          value: RepeatType.monthly, child: Text('Hàng tháng')),
+                    ],
+                    onChanged: (v) => setState(() => _repeatType = v!),
+                  ),
+                  if (_repeatType == RepeatType.weekly) ...[
+                    const SizedBox(height: 10),
+                    const Text('Chọn ngày trong tuần:',
+                        style: TextStyle(
+                            fontSize: 13, color: AppTheme.textSecondary)),
+                    const SizedBox(height: 6),
+                    _WeekdayPicker(
+                      selected: _repeatDays,
+                      onChanged: (days) => setState(() => _repeatDays = days),
+                    ),
+                  ],
+                ],
+                icon: SvgIcon(AppIcons.refresh, size: 16)),
+            const SizedBox(height: 16),
+            _buildSection(
+                'Điểm Thưởng',
+                [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _pointsController,
+                          decoration:
+                              _inputDeco('Điểm khi hoàn thành', Icons.star),
+                          keyboardType: TextInputType.number,
+                          validator: (v) {
+                            final n = int.tryParse(v ?? '');
+                            if (n == null || n < 1) return 'Điểm phải > 0';
+                            return null;
+                          },
                         ),
                       ),
-                    );
-                  }).toList(),
-                ),
-            ]),
-            const SizedBox(height: 16),
-            _buildSection('📅 Thời Hạn', [
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.calendar_today,
-                    color: AppTheme.primaryColor),
-                title: Text(
-                  _dueDate != null
-                      ? '${_dueDate!.day}/${_dueDate!.month}/${_dueDate!.year} '
-                          '${_dueDate!.hour.toString().padLeft(2, '0')}:${_dueDate!.minute.toString().padLeft(2, '0')}'
-                      : 'Chọn ngày & giờ',
-                  style: TextStyle(
-                      color: _dueDate != null ? null : AppTheme.textSecondary),
-                ),
-                trailing: _dueDate != null
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () => setState(() => _dueDate = null),
-                      )
-                    : const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: _pickDate,
-              ),
-            ]),
-            const SizedBox(height: 16),
-            _buildSection('⏰ Nhắc Nhở', [
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.alarm, color: AppTheme.primaryColor),
-                title: Text(
-                  _reminderTime != null
-                      ? 'Nhắc lúc ${_reminderTime!.hour.toString().padLeft(2, '0')}:${_reminderTime!.minute.toString().padLeft(2, '0')}'
-                      : 'Không nhắc',
-                  style: TextStyle(
-                      color: _reminderTime != null
-                          ? null
-                          : AppTheme.textSecondary),
-                ),
-                trailing: _reminderTime != null
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () => setState(() => _reminderTime = null),
-                      )
-                    : const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: _pickReminderTime,
-              ),
-            ]),
-            const SizedBox(height: 16),
-            _buildSection('🔁 Lặp Lại', [
-              DropdownButtonFormField<RepeatType>(
-                value: _repeatType,
-                decoration: _inputDeco('Chọn kiểu lặp', Icons.repeat),
-                items: const [
-                  DropdownMenuItem(
-                      value: RepeatType.none, child: Text('Không lặp')),
-                  DropdownMenuItem(
-                      value: RepeatType.daily, child: Text('Hàng ngày')),
-                  DropdownMenuItem(
-                      value: RepeatType.weekly, child: Text('Hàng tuần')),
-                  DropdownMenuItem(
-                      value: RepeatType.monthly, child: Text('Hàng tháng')),
-                ],
-                onChanged: (v) => setState(() => _repeatType = v!),
-              ),
-              if (_repeatType == RepeatType.weekly) ...[
-                const SizedBox(height: 10),
-                const Text('Chọn ngày trong tuần:',
-                    style:
-                        TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
-                const SizedBox(height: 6),
-                _WeekdayPicker(
-                  selected: _repeatDays,
-                  onChanged: (days) => setState(() => _repeatDays = days),
-                ),
-              ],
-            ]),
-            const SizedBox(height: 16),
-            _buildSection('⭐ Điểm Thưởng', [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _pointsController,
-                      decoration: _inputDeco('Điểm khi hoàn thành', Icons.star),
-                      keyboardType: TextInputType.number,
-                      validator: (v) {
-                        final n = int.tryParse(v ?? '');
-                        if (n == null || n < 1) return 'Điểm phải > 0';
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  _PointPreset(
-                    points: [5, 10, 20, 30],
-                    selected: int.tryParse(_pointsController.text) ?? 10,
-                    onTap: (v) => setState(() => _pointsController.text = '$v'),
+                      const SizedBox(width: 12),
+                      _PointPreset(
+                        points: [5, 10, 20, 30],
+                        selected: int.tryParse(_pointsController.text) ?? 10,
+                        onTap: (v) =>
+                            setState(() => _pointsController.text = '$v'),
+                      ),
+                    ],
                   ),
                 ],
-              ),
-            ]),
+                icon: SvgIcon(AppIcons.star, size: 16)),
             const SizedBox(height: 32),
             ElevatedButton.icon(
               onPressed: _save,
@@ -401,7 +444,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
     );
   }
 
-  Widget _buildSection(String title, List<Widget> children) {
+  Widget _buildSection(String title, List<Widget> children, {Widget? icon}) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -414,9 +457,14 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title,
-              style:
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          Row(
+            children: [
+              if (icon != null) ...[icon, const SizedBox(width: 6)],
+              Text(title,
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold)),
+            ],
+          ),
           const SizedBox(height: 10),
           ...children,
         ],
